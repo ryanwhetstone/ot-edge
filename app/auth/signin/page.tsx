@@ -1,4 +1,47 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+
 export default function SignInPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const registered = searchParams.get("registered");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Invalid email or password");
+        return;
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 rounded-lg border bg-white p-8 shadow-lg">
@@ -8,7 +51,17 @@ export default function SignInPage() {
             Welcome back to OT Edge
           </p>
         </div>
-        <form className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          {registered && (
+            <div className="rounded bg-green-50 p-3 text-sm text-green-600">
+              Account created successfully! Please sign in.
+            </div>
+          )}
+          {error && (
+            <div className="rounded bg-red-50 p-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium">
@@ -38,16 +91,17 @@ export default function SignInPage() {
 
           <button
             type="submit"
-            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700"
+            disabled={loading}
+            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            Sign In
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
         <p className="text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <a href="/auth/signup" className="font-medium text-blue-600 hover:underline">
+          <Link href="/auth/signup" className="font-medium text-blue-600 hover:underline">
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>
