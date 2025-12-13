@@ -1,10 +1,15 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
@@ -51,6 +56,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      // For OAuth providers (Google), create user in database if doesn't exist
+      if (account?.provider === "google" && user.email) {
+        try {
+          const existingUser = await sql`
+            SELECT id FROM users WHERE email = ${user.email}
+          `;
+
+          if (existingUser.rows.length === 0) {
+            // Create user without password for OAuth users
+            await sql`
+              INSERT INTO users (name, email, password)
+              VALUES (${user.name || "User"}, ${user.email}, ${""})
+            `;
+          }
+        } catch (error) {
+          console.error("Error creating OAuth user:", error);
+        }
+      }
+      return true;
+    },
+  },
   pages: {
     signIn: "/auth/signin",
   },
