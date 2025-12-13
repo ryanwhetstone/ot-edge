@@ -2,7 +2,14 @@ import Link from "next/link";
 import { auth } from "@/auth";
 
 export default async function Header() {
-  const session = await auth();
+  let session = null;
+  
+  try {
+    session = await auth();
+  } catch (error) {
+    // Handle invalid session (e.g., after AUTH_SECRET change)
+    console.error("Session error:", error);
+  }
 
   return (
     <header className="border-b">
