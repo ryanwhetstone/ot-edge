@@ -161,3 +161,75 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Get user ID
+    const user = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, session.user.email))
+      .limit(1);
+
+    if (user.length === 0) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    const userId = user[0].id;
+    const { searchParams } = new URL(request.url);
+    const assessmentUuid = searchParams.get('uuid');
+
+    if (!assessmentUuid) {
+      return NextResponse.json(
+        { error: 'Assessment UUID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Verify assessment belongs to user before deleting
+    const assessment = await db
+      .select({ id: spm2Assessments.id })
+      .from(spm2Assessments)
+      .where(
+        and(
+          eq(spm2Assessments.uuid, assessmentUuid),
+          eq(spm2Assessments.userId, userId)
+        )
+      )
+      .limit(1);
+
+    if (assessment.length === 0) {
+      return NextResponse.json(
+        { error: 'Assessment not found or unauthorized' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the assessment
+    await db
+      .delete(spm2Assessments)
+      .where(eq(spm2Assessments.uuid, assessmentUuid));
+
+    return NextResponse.json({
+      success: true,
+      message: 'Assessment deleted successfully',
+    });
+  } catch (error) {
+    console.error('Error deleting SPM-2 assessment:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete assessment' },
+      { status: 500 }
+    );
+  }
+}
