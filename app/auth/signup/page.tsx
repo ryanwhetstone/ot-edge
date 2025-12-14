@@ -147,11 +147,6 @@ export default function SignUpPage() {
           Sign up with Google
         </button>
 
-            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? "Creating account..." : "Sign Up"}
-          </button>
-        </form>
         <p className="text-center text-sm text-gray-600">
           Already have an account?{" "}
           <Link href="/auth/signin" className="font-medium text-blue-600 hover:underline">
