@@ -4,7 +4,7 @@ import Link from "next/link";
 import { db } from "@/lib/drizzle";
 import { users, clients, spm2Assessments } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
-import { spm2Sections } from "@/lib/spm2-questions";
+import AssessmentTabs from "./AssessmentTabs";
 
 export default async function AssessmentViewPage({
   params,
@@ -65,11 +65,6 @@ export default async function AssessmentViewPage({
   const assessmentData = assessment[0];
   const responses = assessmentData.responses as Record<string, number>;
 
-  const getResponseLabel = (value: number) => {
-    const labels = ['Never', 'Occasionally', 'Frequently', 'Always'];
-    return labels[value - 1] || 'N/A';
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -91,56 +86,7 @@ export default async function AssessmentViewPage({
         </p>
       </div>
 
-      {assessmentData.notes && (
-        <div className="mb-6 rounded-lg border bg-blue-50 p-4">
-          <h3 className="font-semibold text-blue-900">Notes</h3>
-          <p className="mt-1 text-sm text-blue-800">{assessmentData.notes}</p>
-        </div>
-      )}
-
-      <div className="space-y-8">
-        {spm2Sections.map((section) => (
-          <div key={section.id} className="rounded-lg border bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              {section.title}
-            </h2>
-            <p className="mb-4 text-sm text-gray-600">{section.description}</p>
-            <div className="space-y-4">
-              {section.questions.map((question) => {
-                const response = responses[question.id];
-                return (
-                  <div
-                    key={question.id}
-                    className="border-b pb-4 last:border-b-0 last:pb-0"
-                  >
-                    <p className="text-sm font-medium text-gray-900">
-                      {question.text}
-                    </p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-xs font-medium text-gray-500">Response:</span>
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
-                          response === 1
-                            ? 'bg-green-100 text-green-800'
-                            : response === 2
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : response === 3
-                            ? 'bg-orange-100 text-orange-800'
-                            : response === 4
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
-                        {getResponseLabel(response)}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+      <AssessmentTabs responses={responses} notes={assessmentData.notes} />
 
       <div className="mt-8">
         <Link

@@ -19,11 +19,17 @@ export default async function ClientDetailPage({
   }
 
   // Get user ID
-  const user = await db
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.email, session.user.email))
-    .limit(1);
+  let user;
+  try {
+    user = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, session.user.email))
+      .limit(1);
+  } catch (error) {
+    console.error('Database error fetching user:', error);
+    throw new Error(`Failed to fetch user: ${error}`);
+  }
 
   if (user.length === 0) {
     redirect("/auth/signin");
