@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, timestamp, integer, date, index, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, timestamp, integer, date, index, uuid, text, jsonb } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -26,5 +26,23 @@ export const clients = pgTable('clients', {
   return {
     userIdIdx: index('idx_clients_user_id').on(table.userId),
     uuidIdx: index('idx_clients_uuid').on(table.uuid),
+  };
+});
+
+export const spm2Assessments = pgTable('spm2_assessments', {
+  id: serial('id').primaryKey(),
+  uuid: uuid('uuid').defaultRandom().notNull().unique(),
+  clientId: integer('client_id').notNull().references(() => clients.id, { onDelete: 'cascade' }),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  assessmentDate: timestamp('assessment_date').defaultNow(),
+  responses: jsonb('responses').notNull(), // Store all question responses as JSON
+  notes: text('notes'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => {
+  return {
+    clientIdIdx: index('idx_spm2_client_id').on(table.clientId),
+    userIdIdx: index('idx_spm2_user_id').on(table.userId),
+    uuidIdx: index('idx_spm2_uuid').on(table.uuid),
   };
 });

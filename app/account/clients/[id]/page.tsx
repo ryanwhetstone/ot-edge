@@ -88,6 +88,19 @@ export default async function ClientDetailPage({
         </div>
 
         <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold">Assessments</h2>
+          <p className="mb-4 text-sm text-gray-600">
+            Complete standardized assessments to track progress.
+          </p>
+          <Link
+            href={`/account/clients/${id}/spm2-assessment`}
+            className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Complete SPM-2 Assessment
+          </Link>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold">Sessions</h2>
           <p className="text-sm text-gray-600">
             No sessions yet. Sessions feature coming soon.
