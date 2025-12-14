@@ -74,19 +74,11 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Score
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Possible
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Percentage
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {spm2Sections.map((section) => {
                     const score = calculateSectionScore(section.id);
-                    const possible = section.questions.length * 4; // Max is 4 (Always)
-                    const percentage = ((score / possible) * 100).toFixed(1);
                     
                     return (
                       <tr key={section.id}>
@@ -103,22 +95,6 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                             {score}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{possible}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="text-sm font-medium text-gray-900 mr-2">
-                              {percentage}%
-                            </div>
-                            <div className="w-24 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-600 h-2 rounded-full"
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                        </td>
                       </tr>
                     );
                   })}
@@ -129,16 +105,6 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-gray-900">
                         {getTotalScore()}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {spm2Sections.length * 10 * 4}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-bold text-gray-900">
-                        {((getTotalScore() / (spm2Sections.length * 10 * 4)) * 100).toFixed(1)}%
                       </div>
                     </td>
                   </tr>
