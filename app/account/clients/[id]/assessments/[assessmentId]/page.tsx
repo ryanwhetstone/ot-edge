@@ -9,9 +9,9 @@ import { spm2Sections } from "@/lib/spm2-questions";
 export default async function AssessmentViewPage({
   params,
 }: {
-  params: Promise<{ clientId: string; assessmentId: string }>;
+  params: Promise<{ id: string; assessmentId: string }>;
 }) {
-  const { clientId, assessmentId } = await params;
+  const { id, assessmentId } = await params;
   const session = await auth();
 
   if (!session?.user?.email) {
@@ -35,7 +35,7 @@ export default async function AssessmentViewPage({
     .from(clients)
     .where(
       and(
-        eq(clients.uuid, clientId),
+        eq(clients.uuid, id),
         eq(clients.userId, user[0].id)
       )
     )
@@ -74,7 +74,7 @@ export default async function AssessmentViewPage({
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href={`/account/clients/${clientId}`}
+          href={`/account/clients/${id}`}
           className="text-sm text-blue-600 hover:underline"
         >
           ← Back to Client
@@ -144,7 +144,7 @@ export default async function AssessmentViewPage({
 
       <div className="mt-8">
         <Link
-          href={`/account/clients/${clientId}`}
+          href={`/account/clients/${id}`}
           className="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
         >
           Back to Client
