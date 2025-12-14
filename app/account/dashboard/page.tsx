@@ -18,7 +18,30 @@ export default async function DashboardPage() {
         </p>
       </div>
 
+      <div className="mb-6">
+        <Link
+          href="/account/clients/new"
+          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
+        >
+          <span className="text-xl">+</span>
+          New Client
+        </Link>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Clients</h2>
+          <p className="text-sm text-gray-600">
+            View and manage your client list
+          </p>
+          <Link
+            href="/account/clients"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            View clients →
+          </Link>
+        </div>
+
         <div className="rounded-lg border bg-white p-6 shadow-sm">
           <h2 className="mb-2 text-lg font-semibold">Profile</h2>
           <p className="text-sm text-gray-600">
