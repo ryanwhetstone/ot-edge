@@ -1,8 +1,10 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
+import { db } from "@/lib/drizzle";
+import { users } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -22,13 +24,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         try {
           // Find user by email
-          const result = await sql`
-            SELECT id, name, email, password 
-            FROM users 
-            WHERE email = ${credentials.email as string}
-          `;
+          const result = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, credentials.email as string))
+            .limit(1);
 
-          const user = result.rows[0];
+          const user = result[0];
 
           if (!user) {
             return null;
@@ -61,16 +63,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // For OAuth providers (Google), create user in database if doesn't exist
       if (account?.provider === "google" && user.email) {
         try {
-          const existingUser = await sql`
-            SELECT id FROM users WHERE email = ${user.email}
-          `;
+          const existingUser = await db
+            .select({ id: users.id })
+            .from(users)
+            .where(eq(users.email, user.email))
+            .limit(1);
 
-          if (existingUser.rows.length === 0) {
+          if (existingUser.length === 0) {
             // Create user without password for OAuth users
-            await sql`
-              INSERT INTO users (name, email, password)
-              VALUES (${user.name || "User"}, ${user.email}, ${""})
-            `;
+            await db
+              .insert(users)
+              .values({
+                name: user.name || "User",
+                email: user.email,
+                password: "",
+              });
           }
         } catch (error) {
           console.error("Error creating OAuth user:", error);
