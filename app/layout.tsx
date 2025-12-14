@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/header";
 
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
+        <Suspense fallback={<div className="h-16 border-b" />}>
+          <Header />
+        </Suspense>
         {children}
       </body>
     </html>
