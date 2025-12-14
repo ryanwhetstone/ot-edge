@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 type Assessment = {
   id: number;
@@ -28,6 +29,8 @@ export default function AssessmentsList({
     }
 
     setDeletingId(assessmentUuid);
+    const toastId = toast.loading('Deleting assessment...');
+    
     try {
       const response = await fetch(`/api/spm2-assessments?uuid=${assessmentUuid}`, {
         method: 'DELETE',
@@ -37,10 +40,11 @@ export default function AssessmentsList({
         throw new Error('Failed to delete assessment');
       }
 
+      toast.success('Assessment deleted successfully', { id: toastId });
       router.refresh();
     } catch (error) {
       console.error('Error deleting assessment:', error);
-      alert('Failed to delete assessment. Please try again.');
+      toast.error('Failed to delete assessment. Please try again.', { id: toastId });
     } finally {
       setDeletingId(null);
     }

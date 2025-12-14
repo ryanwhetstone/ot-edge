@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { spm2Sections, type SPM2Section } from '@/lib/spm2-questions';
+import toast from 'react-hot-toast';
 
 type Responses = Record<string, number>;
 
@@ -30,7 +31,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
       setCurrentSectionIndex(prev => prev + 1);
       window.scrollTo(0, 0);
     } else {
-      alert('Please answer all questions in this section before continuing.');
+      toast.error('Please answer all questions in this section before continuing.');
     }
   };
 
@@ -41,11 +42,13 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
 
   const handleSubmit = async () => {
     if (!isCurrentSectionComplete()) {
-      alert('Please answer all questions before submitting.');
+      toast.error('Please answer all questions before submitting.');
       return;
     }
 
     setIsSubmitting(true);
+    const toastId = toast.loading('Saving assessment...');
+    
     try {
       const response = await fetch('/api/spm2-assessments', {
         method: 'POST',
@@ -62,10 +65,11 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
       }
 
       const data = await response.json();
+      toast.success('Assessment saved successfully!', { id: toastId });
       router.push(`/account/clients/${clientId}`);
     } catch (error) {
       console.error('Error submitting assessment:', error);
-      alert('Failed to save assessment. Please try again.');
+      toast.error('Failed to save assessment. Please try again.', { id: toastId });
     } finally {
       setIsSubmitting(false);
     }
