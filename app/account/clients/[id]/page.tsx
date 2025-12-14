@@ -8,8 +8,9 @@ import { eq, and } from "drizzle-orm";
 export default async function ClientDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const session = await auth();
 
   if (!session?.user?.email) {
@@ -33,7 +34,7 @@ export default async function ClientDetailPage({
     .from(clients)
     .where(
       and(
-        eq(clients.uuid, params.id),
+        eq(clients.uuid, id),
         eq(clients.userId, user[0].id)
       )
     )
