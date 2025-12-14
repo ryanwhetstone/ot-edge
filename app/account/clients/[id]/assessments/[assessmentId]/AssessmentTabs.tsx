@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { spm2Sections } from '@/lib/spm2-questions';
 
 type AssessmentTabsProps = {
   responses: Record<string, number>;
   notes: string | null;
+  clientName: string;
 };
 
-export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps) {
+export default function AssessmentTabs({ responses, notes, clientName }: AssessmentTabsProps) {
   const [activeTab, setActiveTab] = useState<'scores' | 'responses'>('scores');
+  const [takeaways, setTakeaways] = useState<Record<string, string>>({});
+  const [loadingTakeaways, setLoadingTakeaways] = useState<Record<string, boolean>>({});
 
   const calculateSectionScore = (sectionId: string) => {
     const section = spm2Sections.find(s => s.id === sectionId);
@@ -31,6 +34,44 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
       return total + calculateSectionScore(section.id);
     }, 0);
   };
+
+  const generateTakeaway = async (sectionId: string) => {
+    setLoadingTakeaways(prev => ({ ...prev, [sectionId]: true }));
+    
+    try {
+      const response = await fetch('/api/generate-takeaway', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sectionId,
+          responses,
+          clientName,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate takeaway');
+      }
+
+      const data = await response.json();
+      setTakeaways(prev => ({ ...prev, [sectionId]: data.takeaway }));
+    } catch (error) {
+      console.error('Error generating takeaway:', error);
+      setTakeaways(prev => ({ ...prev, [sectionId]: 'Unable to generate takeaway at this time.' }));
+    } finally {
+      setLoadingTakeaways(prev => ({ ...prev, [sectionId]: false }));
+    }
+  };
+
+  useEffect(() => {
+    // Generate takeaways for all sections when component mounts
+    spm2Sections.forEach(section => {
+      generateTakeaway(section.id);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -74,11 +115,16 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Score
                     </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Takeaways
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {spm2Sections.map((section) => {
                     const score = calculateSectionScore(section.id);
+                    const takeaway = takeaways[section.id];
+                    const isLoading = loadingTakeaways[section.id];
                     
                     return (
                       <tr key={section.id}>
@@ -95,6 +141,21 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                             {score}
                           </div>
                         </td>
+                        <td className="px-6 py-4">
+                          {isLoading ? (
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Generating...
+                            </div>
+                          ) : (
+                            <div className="text-sm text-gray-700 max-w-xl">
+                              {takeaway || 'No takeaways available.'}
+                            </div>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
@@ -105,6 +166,11 @@ export default function AssessmentTabs({ responses, notes }: AssessmentTabsProps
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-gray-900">
                         {getTotalScore()}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-500">
+                        Summary of all section findings
                       </div>
                     </td>
                   </tr>

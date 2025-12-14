@@ -86,7 +86,11 @@ export default async function AssessmentViewPage({
         </p>
       </div>
 
-      <AssessmentTabs responses={responses} notes={assessmentData.notes} />
+      <AssessmentTabs 
+        responses={responses} 
+        notes={assessmentData.notes}
+        clientName={client[0].firstName}
+      />
 
       <div className="mt-8">
         <Link
