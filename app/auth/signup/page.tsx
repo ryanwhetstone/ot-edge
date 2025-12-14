@@ -47,7 +47,7 @@ export default function SignUpPage() {
 
   async function handleGoogleSignUp() {
     setError("");
-    await signIn("google", { callbackUrl: "/" });
+    await signIn("google", { callbackUrl: "/account/dashboard" });
   }
 
   return (

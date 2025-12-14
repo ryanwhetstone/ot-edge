@@ -33,7 +33,7 @@ function SignInForm() {
         return;
       }
 
-      router.push("/");
+      router.push("/account/dashboard");
       router.refresh();
     } catch (err) {
       setError("An error occurred. Please try again.");
@@ -44,7 +44,7 @@ function SignInForm() {
 
   async function handleGoogleSignIn() {
     setError("");
-    await signIn("google", { callbackUrl: "/" });
+    await signIn("google", { callbackUrl: "/account/dashboard" });
   }
 
   return (

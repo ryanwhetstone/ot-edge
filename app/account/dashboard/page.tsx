@@ -1,0 +1,103 @@
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+
+export default async function DashboardPage() {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <p className="mt-2 text-gray-600">
+          Welcome back, {session.user?.name || session.user?.email}!
+        </p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Profile</h2>
+          <p className="text-sm text-gray-600">
+            Manage your account settings and preferences
+          </p>
+          <Link
+            href="/account/profile"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            View profile →
+          </Link>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Activity</h2>
+          <p className="text-sm text-gray-600">
+            View your recent activity and history
+          </p>
+          <Link
+            href="/account/activity"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            View activity →
+          </Link>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Settings</h2>
+          <p className="text-sm text-gray-600">
+            Configure your account preferences
+          </p>
+          <Link
+            href="/account/settings"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            Manage settings →
+          </Link>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Quick Stats</h2>
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Total Sessions</span>
+              <span className="font-medium">12</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Last Login</span>
+              <span className="font-medium">Today</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Notifications</h2>
+          <p className="text-sm text-gray-600">
+            You have no new notifications
+          </p>
+          <Link
+            href="/account/notifications"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            View all →
+          </Link>
+        </div>
+
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <h2 className="mb-2 text-lg font-semibold">Help & Support</h2>
+          <p className="text-sm text-gray-600">
+            Get help with your account or report issues
+          </p>
+          <Link
+            href="/help"
+            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            Get help →
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
