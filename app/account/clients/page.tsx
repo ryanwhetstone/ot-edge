@@ -84,7 +84,7 @@ export default async function ClientsPage() {
                   </td>
                   <td className="px-6 py-4 text-right text-sm">
                     <Link
-                      href={`/account/clients/${client.id}`}
+                      href={`/account/clients/${client.uuid}`}
                       className="text-blue-600 hover:underline"
                     >
                       View

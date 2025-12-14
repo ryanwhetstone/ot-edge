@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, timestamp, integer, date, index } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, timestamp, integer, date, index, uuid } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -15,6 +15,7 @@ export const users = pgTable('users', {
 
 export const clients = pgTable('clients', {
   id: serial('id').primaryKey(),
+  uuid: uuid('uuid').defaultRandom().notNull().unique(),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   firstName: varchar('first_name', { length: 255 }).notNull(),
   lastName: varchar('last_name', { length: 255 }).notNull(),
@@ -24,5 +25,6 @@ export const clients = pgTable('clients', {
 }, (table) => {
   return {
     userIdIdx: index('idx_clients_user_id').on(table.userId),
+    uuidIdx: index('idx_clients_uuid').on(table.uuid),
   };
 });
