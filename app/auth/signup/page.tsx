@@ -107,6 +107,11 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={loading}
+            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? "Creating account..." : "Sign Up"}
+          </button>
+        </form>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
