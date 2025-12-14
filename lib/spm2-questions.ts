@@ -29,7 +29,14 @@ const responseOptions: SPM2Option[] = [
 // Helper function to create question placeholders
 const createQuestion = (id: string, num: number): SPM2Question => ({
   id,
-  text: `[Question ${num}] - Rep (SOC)',
+  text: `[Question ${num}] - Replace with actual SPM-2 question text`,
+  options: responseOptions,
+});
+
+export const spm2Sections: SPM2Section[] = [
+  {
+    id: 'social-participation',
+    title: 'Social Participation (SOC)',
     description: 'Social interactions and participation in activities',
     questions: [
       createQuestion('soc1', 1),
@@ -160,14 +167,7 @@ const createQuestion = (id: string, num: number): SPM2Question => ({
       createQuestion('tot7', 77),
       createQuestion('tot8', 78),
       createQuestion('tot9', 79),
-      createQuestion('tot10', 80) text: 'Has trouble with tasks requiring multiple steps',
-        options: responseOptions,
-      },
-      {
-        id: 'pi5',
-        text: 'Difficulty imitating actions or gestures',
-        options: responseOptions,
-      },
+      createQuestion('tot10', 80),
     ],
   },
 ];
