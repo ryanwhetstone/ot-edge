@@ -10,9 +10,9 @@ import DeleteButton from "./DeleteButton";
 export default async function AssessmentViewPage({
   params,
 }: {
-  params: Promise<{ id: string; assessmentId: string }>;
+  params: Promise<{ assessmentId: string }>;
 }) {
-  const { id, assessmentId } = await params;
+  const { assessmentId } = await params;
   const session = await auth();
 
   if (!session?.user?.email) {
@@ -30,22 +30,6 @@ export default async function AssessmentViewPage({
     redirect("/auth/signin");
   }
 
-  // Get client by UUID and verify ownership
-  const client = await db
-    .select()
-    .from(clients)
-    .where(
-      and(
-        eq(clients.uuid, id),
-        eq(clients.userId, user[0].id)
-      )
-    )
-    .limit(1);
-
-  if (client.length === 0) {
-    notFound();
-  }
-
   // Get assessment by UUID and verify ownership
   const assessment = await db
     .select()
@@ -53,8 +37,7 @@ export default async function AssessmentViewPage({
     .where(
       and(
         eq(spm2Assessments.uuid, assessmentId),
-        eq(spm2Assessments.userId, user[0].id),
-        eq(spm2Assessments.clientId, client[0].id)
+        eq(spm2Assessments.userId, user[0].id)
       )
     )
     .limit(1);
@@ -64,6 +47,18 @@ export default async function AssessmentViewPage({
   }
 
   const assessmentData = assessment[0];
+
+  // Get client information
+  const client = await db
+    .select()
+    .from(clients)
+    .where(eq(clients.id, assessmentData.clientId))
+    .limit(1);
+
+  if (client.length === 0) {
+    notFound();
+  }
+
   const responses = assessmentData.responses as Record<string, number>;
 
   return (
@@ -72,7 +67,7 @@ export default async function AssessmentViewPage({
         <div className="flex justify-between items-start">
           <div>
             <Link
-              href={`/account/clients/${id}`}
+              href={`/account/client/${client[0].uuid}`}
               className="text-sm text-blue-600 hover:underline"
             >
               ← Back to Client
@@ -90,7 +85,7 @@ export default async function AssessmentViewPage({
                 : 'Unknown date'}
             </p>
           </div>
-          <DeleteButton assessmentId={assessmentData.uuid} clientId={id} />
+          <DeleteButton assessmentId={assessmentData.uuid} clientId={client[0].uuid} />
         </div>
       </div>
 
@@ -103,7 +98,7 @@ export default async function AssessmentViewPage({
 
       <div className="mt-8">
         <Link
-          href={`/account/clients/${id}`}
+          href={`/account/client/${client[0].uuid}`}
           className="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
         >
           Back to Client

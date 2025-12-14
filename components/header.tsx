@@ -23,7 +23,7 @@ export default async function Header() {
             <>
               <Link
                 href="/account/dashboard"
-                className=" font-medium text-gray-700 hover:text-gray-900"
+                className="font-bold text-gray-700 hover:text-gray-900"
               >
                 Dashboard
               </Link>

@@ -53,7 +53,7 @@ export default async function SPM2AssessmentPage({
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href={`/account/clients/${id}`}
+          href={`/account/client/${id}`}
           className="text-sm text-blue-600 hover:underline"
         >
           ← Back to Client

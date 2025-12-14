@@ -38,7 +38,7 @@ export default async function ClientsPage() {
           <p className="mt-2 text-gray-600">Manage your client list</p>
         </div>
         <Link
-          href="/account/clients/new"
+          href="/account/client/new"
           className="rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
         >
           + New Client
@@ -72,20 +72,35 @@ export default async function ClientsPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {userClients.map((client) => (
-                <tr key={client.id} className="hover:bg-gray-50">
+                <tr key={client.id} className="hover:bg-gray-100 transition-all cursor-pointer">
                   <td className="px-6 py-4 text-sm">
-                    {client.firstName} {client.lastName}
+                    <Link
+                      href={`/account/client/${client.uuid}`}
+                      className="block"
+                    >
+                      {client.firstName} {client.lastName}
+                    </Link>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {new Date(client.birthDate).toLocaleDateString()}
+                    <Link
+                      href={`/account/client/${client.uuid}`}
+                      className="block"
+                    >
+                      {new Date(client.birthDate).toLocaleDateString()}
+                    </Link>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {new Date(client.createdAt!).toLocaleDateString()}
+                    <Link
+                      href={`/account/client/${client.uuid}`}
+                      className="block"
+                    >
+                      {new Date(client.createdAt!).toLocaleDateString()}
+                    </Link>
                   </td>
                   <td className="px-6 py-4 text-right text-sm">
                     <Link
-                      href={`/account/clients/${client.uuid}`}
-                      className="text-blue-600 hover:underline"
+                      href={`/account/client/${client.uuid}`}
+                      className="block text-blue-600"
                     >
                       View
                     </Link>

@@ -20,7 +20,7 @@ export default async function DashboardPage() {
 
       <div className="mb-6">
         <Link
-          href="/account/clients/new"
+          href="/account/client-list/new"
           className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
         >
           <span className="text-xl">+</span>
@@ -29,57 +29,57 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/account/client-list"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Clients</h2>
           <p className="text-sm text-gray-600">
             View and manage your client list
           </p>
-          <Link
-            href="/account/clients"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             View clients →
-          </Link>
-        </div>
+          </div>
+        </Link>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/account/profile"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Profile</h2>
           <p className="text-sm text-gray-600">
             Manage your account settings and preferences
           </p>
-          <Link
-            href="/account/profile"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             View profile →
-          </Link>
-        </div>
+          </div>
+        </Link>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/account/activity"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Activity</h2>
           <p className="text-sm text-gray-600">
             View your recent activity and history
           </p>
-          <Link
-            href="/account/activity"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             View activity →
-          </Link>
-        </div>
+          </div>
+        </Link>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/account/settings"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Settings</h2>
           <p className="text-sm text-gray-600">
             Configure your account preferences
           </p>
-          <Link
-            href="/account/settings"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             Manage settings →
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         <div className="rounded-lg border bg-white p-6 shadow-sm">
           <h2 className="mb-2 text-lg font-semibold">Quick Stats</h2>
@@ -95,31 +95,31 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/account/notifications"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Notifications</h2>
           <p className="text-sm text-gray-600">
             You have no new notifications
           </p>
-          <Link
-            href="/account/notifications"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             View all →
-          </Link>
-        </div>
+          </div>
+        </Link>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <Link
+          href="/help"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
           <h2 className="mb-2 text-lg font-semibold">Help & Support</h2>
           <p className="text-sm text-gray-600">
             Get help with your account or report issues
           </p>
-          <Link
-            href="/help"
-            className="mt-4 inline-block text-sm text-blue-600 hover:underline"
-          >
+          <div className="mt-4 inline-block text-blue-600">
             Get help →
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
     </div>
   );

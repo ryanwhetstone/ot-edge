@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { spm2Sections } from '@/lib/spm2-questions';
-import { getScoreCategory, getCategoryColor } from '@/lib/spm2-scoring';
+import { getScoreCategory, getCategoryColor, getTScore } from '@/lib/spm2-scoring';
 
 type AssessmentTabsProps = {
   responses: Record<string, number>;
@@ -184,6 +184,9 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                       Score
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      T
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Category
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -194,6 +197,7 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                 <tbody className="bg-white divide-y divide-gray-200">
                   {spm2Sections.map((section) => {
                     const score = calculateSectionScore(section.id, isEditing);
+                    const tScore = getTScore(section.id, score);
                     const category = getScoreCategory(section.id, score);
                     const takeaway = takeaways[section.id];
                     const isLoading = loadingTakeaways[section.id];
@@ -211,6 +215,11 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-semibold text-gray-900">
                             {score}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-semibold text-gray-900">
+                            {tScore ?? '-'}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -249,6 +258,11 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-bold text-gray-900">
+                        {getTScore('sensory-total', getSensoryTotal(isEditing)) ?? '-'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getCategoryColor(getScoreCategory('sensory-total', getSensoryTotal(isEditing)))}`}>
                         {getScoreCategory('sensory-total', getSensoryTotal(isEditing))}
                       </span>
@@ -267,6 +281,9 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                       <div className="text-sm font-bold text-gray-900">
                         {getTotalScore(isEditing)}
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-500">-</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">Overall</div>

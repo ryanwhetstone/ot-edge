@@ -69,7 +69,7 @@ export default async function ClientDetailPage({
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href="/account/clients"
+          href="/account/client-list"
           className="text-sm text-blue-600 hover:underline"
         >
           ← Back to Clients

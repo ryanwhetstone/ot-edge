@@ -36,7 +36,7 @@ export default function CreateClientPage() {
       }
 
       // Redirect to clients list or dashboard
-      router.push("/account/clients");
+      router.push("/account/client-list");
     } catch (err) {
       setError("An error occurred. Please try again.");
     } finally {

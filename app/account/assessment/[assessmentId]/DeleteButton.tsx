@@ -29,7 +29,7 @@ export default function DeleteButton({ assessmentId, clientId }: DeleteButtonPro
       }
 
       toast.success('Assessment deleted successfully', { id: toastId });
-      router.push(`/account/clients/${clientId}`);
+      router.push(`/account/client/${clientId}`);
       router.refresh();
     } catch (error) {
       console.error('Error deleting assessment:', error);
