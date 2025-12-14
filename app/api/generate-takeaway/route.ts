@@ -27,6 +27,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if AI generation is disabled
+    if (process.env.DISABLE_AI_GENERATION === 'true') {
+      return NextResponse.json({
+        takeaway: `[AI Generation Disabled] ${clientName} shows varied responses in this section. Enable AI generation by setting DISABLE_AI_GENERATION=false in your .env.local file.`,
+      });
+    }
+
     // Find the section
     const section = spm2Sections.find(s => s.id === sectionId);
     if (!section) {
