@@ -1,0 +1,71 @@
+⚠️  To seed assessments, you need to:
+1. Be logged in to the app at http://localhost:3000
+2. Have a client with ID (UUID) ready
+3. Paste the following code into your browser console while logged in:
+
+// ========== COPY BELOW THIS LINE ==========
+
+
+// Assessment 1: 2024-09-15
+fetch('/api/spm2-assessments', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    clientId: '07ca4cb0-28e2-4ebc-be27-5e6067f84a5f', // Replace with actual client UUID
+    responses: {"vis1":1,"vis2":1,"vis3":1,"vis4":1,"vis5":1,"vis6":1,"vis7":1,"vis8":1,"vis9":1,"vis10":1,"hea1":1,"hea2":1,"hea3":2,"hea4":2,"hea5":1,"hea6":1,"hea7":1,"hea8":2,"hea9":1,"hea10":1,"tou1":1,"tou2":2,"tou3":1,"tou4":1,"tou5":1,"tou6":1,"tou7":1,"tou8":2,"tou9":1,"tou10":2,"ts1":2,"ts2":1,"ts3":1,"ts4":2,"ts5":1,"ts6":2,"ts7":1,"ts8":1,"ts9":1,"ts10":1,"bod1":1,"bod2":2,"bod3":1,"bod4":2,"bod5":1,"bod6":1,"bod7":2,"bod8":1,"bod9":1,"bod10":1,"bal1":1,"bal2":2,"bal3":1,"bal4":1,"bal5":1,"bal6":1,"bal7":1,"bal8":1,"bal9":2,"bal10":1,"pla1":1,"pla2":2,"pla3":2,"pla4":1,"pla5":1,"pla6":2,"pla7":2,"pla8":2,"pla9":1,"pla10":1,"soc1":1,"soc2":2,"soc3":2,"soc4":1,"soc5":1,"soc6":2,"soc7":2,"soc8":1,"soc9":1,"soc10":2},
+    notes: 'Initial assessment. Child shows typical sensory processing patterns across most domains.'
+  })
+}).then(r => r.json()).then(d => console.log('✓ Created assessment 1:', d));
+
+
+// Assessment 2: 2024-10-20
+fetch('/api/spm2-assessments', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    clientId: '07ca4cb0-28e2-4ebc-be27-5e6067f84a5f', // Replace with actual client UUID
+    responses: {"vis1":2,"vis2":3,"vis3":2,"vis4":2,"vis5":2,"vis6":2,"vis7":2,"vis8":2,"vis9":2,"vis10":2,"hea1":3,"hea2":2,"hea3":1,"hea4":2,"hea5":1,"hea6":1,"hea7":2,"hea8":1,"hea9":3,"hea10":3,"tou1":1,"tou2":2,"tou3":2,"tou4":1,"tou5":2,"tou6":3,"tou7":2,"tou8":1,"tou9":2,"tou10":1,"ts1":3,"ts2":2,"ts3":1,"ts4":2,"ts5":3,"ts6":2,"ts7":3,"ts8":2,"ts9":3,"ts10":3,"bod1":2,"bod2":2,"bod3":3,"bod4":2,"bod5":2,"bod6":2,"bod7":1,"bod8":2,"bod9":1,"bod10":1,"bal1":3,"bal2":1,"bal3":1,"bal4":2,"bal5":2,"bal6":3,"bal7":1,"bal8":3,"bal9":1,"bal10":1,"pla1":2,"pla2":1,"pla3":1,"pla4":1,"pla5":2,"pla6":2,"pla7":2,"pla8":3,"pla9":1,"pla10":2,"soc1":3,"soc2":2,"soc3":3,"soc4":3,"soc5":3,"soc6":3,"soc7":2,"soc8":3,"soc9":1,"soc10":3},
+    notes: 'Some sensory sensitivities emerging, particularly with auditory and tactile stimuli. Parent reports increased challenges at home.'
+  })
+}).then(r => r.json()).then(d => console.log('✓ Created assessment 2:', d));
+
+
+// Assessment 3: 2024-11-15
+fetch('/api/spm2-assessments', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    clientId: '07ca4cb0-28e2-4ebc-be27-5e6067f84a5f', // Replace with actual client UUID
+    responses: {"vis1":2,"vis2":4,"vis3":4,"vis4":2,"vis5":3,"vis6":4,"vis7":4,"vis8":3,"vis9":2,"vis10":2,"hea1":3,"hea2":3,"hea3":2,"hea4":3,"hea5":3,"hea6":4,"hea7":3,"hea8":3,"hea9":3,"hea10":4,"tou1":3,"tou2":4,"tou3":4,"tou4":2,"tou5":4,"tou6":4,"tou7":3,"tou8":4,"tou9":2,"tou10":3,"ts1":4,"ts2":4,"ts3":3,"ts4":3,"ts5":4,"ts6":4,"ts7":4,"ts8":4,"ts9":4,"ts10":4,"bod1":4,"bod2":2,"bod3":2,"bod4":4,"bod5":2,"bod6":4,"bod7":4,"bod8":2,"bod9":4,"bod10":4,"bal1":4,"bal2":3,"bal3":4,"bal4":4,"bal5":3,"bal6":4,"bal7":4,"bal8":2,"bal9":4,"bal10":4,"pla1":4,"pla2":3,"pla3":3,"pla4":2,"pla5":3,"pla6":4,"pla7":3,"pla8":3,"pla9":4,"pla10":3,"soc1":4,"soc2":2,"soc3":3,"soc4":2,"soc5":3,"soc6":4,"soc7":2,"soc8":3,"soc9":3,"soc10":4},
+    notes: 'More pronounced difficulties noted. Implementing sensory diet and environmental modifications.'
+  })
+}).then(r => r.json()).then(d => console.log('✓ Created assessment 3:', d));
+
+
+// Assessment 4: 2024-12-01
+fetch('/api/spm2-assessments', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    clientId: '07ca4cb0-28e2-4ebc-be27-5e6067f84a5f', // Replace with actual client UUID
+    responses: {"vis1":3,"vis2":4,"vis3":3,"vis4":4,"vis5":4,"vis6":4,"vis7":4,"vis8":3,"vis9":3,"vis10":4,"hea1":3,"hea2":3,"hea3":4,"hea4":4,"hea5":3,"hea6":4,"hea7":4,"hea8":4,"hea9":3,"hea10":4,"tou1":4,"tou2":4,"tou3":4,"tou4":4,"tou5":4,"tou6":3,"tou7":3,"tou8":4,"tou9":4,"tou10":3,"ts1":2,"ts2":2,"ts3":2,"ts4":2,"ts5":2,"ts6":2,"ts7":1,"ts8":1,"ts9":2,"ts10":2,"bod1":2,"bod2":1,"bod3":1,"bod4":1,"bod5":2,"bod6":2,"bod7":2,"bod8":1,"bod9":2,"bod10":1,"bal1":2,"bal2":1,"bal3":2,"bal4":2,"bal5":1,"bal6":2,"bal7":2,"bal8":1,"bal9":1,"bal10":1,"pla1":2,"pla2":4,"pla3":4,"pla4":3,"pla5":4,"pla6":3,"pla7":2,"pla8":4,"pla9":3,"pla10":2,"soc1":1,"soc2":4,"soc3":4,"soc4":3,"soc5":4,"soc6":4,"soc7":4,"soc8":2,"soc9":1,"soc10":4},
+    notes: 'Mixed results - strong improvements in vestibular and proprioceptive areas, ongoing challenges with auditory processing.'
+  })
+}).then(r => r.json()).then(d => console.log('✓ Created assessment 4:', d));
+
+
+// Assessment 5: 2024-12-13
+fetch('/api/spm2-assessments', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    clientId: '07ca4cb0-28e2-4ebc-be27-5e6067f84a5f', // Replace with actual client UUID
+    responses: {"vis1":4,"vis2":4,"vis3":3,"vis4":3,"vis5":2,"vis6":3,"vis7":2,"vis8":1,"vis9":2,"vis10":1,"hea1":4,"hea2":4,"hea3":4,"hea4":2,"hea5":3,"hea6":2,"hea7":2,"hea8":1,"hea9":1,"hea10":2,"tou1":4,"tou2":4,"tou3":3,"tou4":3,"tou5":2,"tou6":2,"tou7":2,"tou8":1,"tou9":2,"tou10":2,"ts1":3,"ts2":4,"ts3":3,"ts4":2,"ts5":3,"ts6":2,"ts7":2,"ts8":1,"ts9":1,"ts10":1,"bod1":4,"bod2":4,"bod3":4,"bod4":2,"bod5":3,"bod6":3,"bod7":3,"bod8":2,"bod9":1,"bod10":2,"bal1":3,"bal2":3,"bal3":4,"bal4":2,"bal5":2,"bal6":3,"bal7":2,"bal8":1,"bal9":2,"bal10":1,"pla1":4,"pla2":3,"pla3":3,"pla4":2,"pla5":3,"pla6":3,"pla7":2,"pla8":1,"pla9":1,"pla10":1,"soc1":4,"soc2":4,"soc3":4,"soc4":2,"soc5":2,"soc6":3,"soc7":2,"soc8":2,"soc9":1,"soc10":2},
+    notes: 'Positive progress! Family reports better regulation and fewer sensory meltdowns. Continuing therapeutic strategies.'
+  })
+}).then(r => r.json()).then(d => console.log('✓ Created assessment 5:', d));
+
+
+// ========== COPY ABOVE THIS LINE ==========
+
+Remember to replace YOUR_CLIENT_UUID_HERE with your actual client UUID!

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { spm2Sections } from '@/lib/spm2-questions';
+import { getScoreCategory, getCategoryColor } from '@/lib/spm2-scoring';
 
 type AssessmentTabsProps = {
   responses: Record<string, number>;
@@ -116,6 +117,9 @@ export default function AssessmentTabs({ responses, notes, clientName }: Assessm
                       Score
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Takeaways
                     </th>
                   </tr>
@@ -123,6 +127,7 @@ export default function AssessmentTabs({ responses, notes, clientName }: Assessm
                 <tbody className="bg-white divide-y divide-gray-200">
                   {spm2Sections.map((section) => {
                     const score = calculateSectionScore(section.id);
+                    const category = getScoreCategory(section.id, score);
                     const takeaway = takeaways[section.id];
                     const isLoading = loadingTakeaways[section.id];
                     
@@ -140,6 +145,11 @@ export default function AssessmentTabs({ responses, notes, clientName }: Assessm
                           <div className="text-sm font-semibold text-gray-900">
                             {score}
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getCategoryColor(category)}`}>
+                            {category}
+                          </span>
                         </td>
                         <td className="px-6 py-4">
                           {isLoading ? (
@@ -167,6 +177,9 @@ export default function AssessmentTabs({ responses, notes, clientName }: Assessm
                       <div className="text-sm font-bold text-gray-900">
                         {getTotalScore()}
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-500">Overall</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-500">

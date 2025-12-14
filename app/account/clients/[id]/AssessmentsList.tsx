@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 type Assessment = {
   id: number;
   uuid: string;
-  assessmentDate: Date;
+  assessmentDate: Date | null;
   createdAt: Date | null;
   notes: string | null;
 };
@@ -67,20 +67,24 @@ export default function AssessmentsList({
             <div className="flex items-center gap-3">
               <div>
                 <p className="font-medium text-gray-900">
-                  {new Date(assessment.assessmentDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  {assessment.assessmentDate 
+                    ? new Date(assessment.assessmentDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : 'No date'}
                 </p>
                 {assessment.notes && (
                   <p className="mt-1 text-sm text-gray-600 line-clamp-1">
                     {assessment.notes}
                   </p>
                 )}
-                <p className="mt-1 text-xs text-gray-500">
-                  Completed {new Date(assessment.createdAt!).toLocaleDateString()}
-                </p>
+                {assessment.createdAt && (
+                  <p className="mt-1 text-xs text-gray-500">
+                    Completed {new Date(assessment.createdAt).toLocaleDateString()}
+                  </p>
+                )}
               </div>
             </div>
           </div>
