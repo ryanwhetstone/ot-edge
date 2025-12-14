@@ -53,6 +53,11 @@ export const sectionScoreRanges: Record<string, SectionScoreRanges> = {
     moderate: { min: 25, max: 31 },
     severe: { min: 32, max: 40 },
   },
+  'sensory-total': {
+    typical: { min: 60, max: 105 },
+    moderate: { min: 106, max: 142 },
+    severe: { min: 143, max: 240 },
+  },
 };
 
 export function getScoreCategory(sectionId: string, rawScore: number): ScoreCategory {

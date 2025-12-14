@@ -97,7 +97,7 @@ function SignInForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            className="w-full rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -114,7 +114,7 @@ function SignInForm() {
 
         <button
           onClick={handleGoogleSignIn}
-          className="flex w-full items-center justify-center gap-3 rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="flex w-full items-center justify-center gap-3 rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path

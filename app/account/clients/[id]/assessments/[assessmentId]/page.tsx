@@ -5,6 +5,7 @@ import { db } from "@/lib/drizzle";
 import { users, clients, spm2Assessments } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import AssessmentTabs from "./AssessmentTabs";
+import DeleteButton from "./DeleteButton";
 
 export default async function AssessmentViewPage({
   params,
@@ -68,30 +69,36 @@ export default async function AssessmentViewPage({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link
-          href={`/account/clients/${id}`}
-          className="text-sm text-blue-600 hover:underline"
-        >
-          ← Back to Client
-        </Link>
-        <h1 className="mt-4 text-3xl font-bold">
-          {client[0].firstName} {client[0].lastName} - SPM-2 Assessment
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Completed on {assessmentData.assessmentDate 
-            ? new Date(assessmentData.assessmentDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })
-            : 'Unknown date'}
-        </p>
+        <div className="flex justify-between items-start">
+          <div>
+            <Link
+              href={`/account/clients/${id}`}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              ← Back to Client
+            </Link>
+            <h1 className="mt-4 text-3xl font-bold">
+              {client[0].firstName} {client[0].lastName} - SPM-2 Assessment
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Completed on {assessmentData.assessmentDate 
+                ? new Date(assessmentData.assessmentDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })
+                : 'Unknown date'}
+            </p>
+          </div>
+          <DeleteButton assessmentId={assessmentData.uuid} clientId={id} />
+        </div>
       </div>
 
       <AssessmentTabs 
         responses={responses} 
         notes={assessmentData.notes}
         clientName={client[0].firstName}
+        assessmentId={assessmentData.uuid}
       />
 
       <div className="mt-8">

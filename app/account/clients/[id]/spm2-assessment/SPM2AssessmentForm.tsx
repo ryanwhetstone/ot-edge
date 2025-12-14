@@ -119,7 +119,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
                   key={option.value}
                   type="button"
                   onClick={() => handleResponse(question.id, option.value)}
-                  className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-colors ${
+                  className={`rounded-lg border-2 px-4 py-3 text-sm font-medium cursor-pointer transition-colors ${
                     responses[question.id] === option.value
                       ? 'border-blue-600 bg-blue-50 text-blue-700'
                       : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
@@ -156,7 +156,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
           type="button"
           onClick={handlePrevious}
           disabled={currentSectionIndex === 0}
-          className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           Previous
         </button>
@@ -175,7 +175,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
             type="button"
             onClick={handleSubmit}
             disabled={!isCurrentSectionComplete() || isSubmitting}
-            className="rounded-md bg-green-600 px-6 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-md bg-green-600 px-6 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? 'Submitting...' : 'Submit Assessment'}
           </button>

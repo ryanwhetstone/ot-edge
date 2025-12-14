@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/auth";
+import AccountMenu from "./AccountMenu";
 
 export default async function Header() {
   let session = null;
@@ -17,26 +18,16 @@ export default async function Header() {
         <Link href="/" className="text-xl font-bold">
           OT Edge
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {session?.user ? (
             <>
-              <span className="text-sm text-gray-600">
-                {session.user.email}
-              </span>
-              <form
-                action={async () => {
-                  "use server";
-                  const { signOut } = await import("@/auth");
-                  await signOut();
-                }}
+              <Link
+                href="/account/dashboard"
+                className=" font-medium text-gray-700 hover:text-gray-900"
               >
-                <button
-                  type="submit"
-                  className="rounded bg-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-300"
-                >
-                  Sign Out
-                </button>
-              </form>
+                Dashboard
+              </Link>
+              <AccountMenu user={session.user} />
             </>
           ) : (
             <>

@@ -75,7 +75,6 @@ export default async function SPM2AssessmentPage({
           <li>• Answer all questions based on typical behavior</li>
           <li>• Use the following scale: Never, Occasionally, Frequently, Always</li>
           <li>• Complete all questions in each section before proceeding</li>
-          <li>• Your progress will be saved as you complete each section</li>
         </ul>
       </div>
 

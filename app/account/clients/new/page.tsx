@@ -111,7 +111,7 @@ export default function CreateClientPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex-1 rounded bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
               >
                 {loading ? "Creating..." : "Create Client"}
               </button>

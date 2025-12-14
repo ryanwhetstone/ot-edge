@@ -100,14 +100,14 @@ export default function AssessmentsList({
                 <button
                   onClick={() => handleConfirmDelete(assessment.uuid)}
                   disabled={deletingId === assessment.uuid}
-                  className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                  className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 cursor-pointer"
                 >
                   {deletingId === assessment.uuid ? 'Deleting...' : 'Confirm Deletion'}
                 </button>
                 <button
                   onClick={() => setConfirmingId(null)}
                   disabled={deletingId === assessment.uuid}
-                  className="rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 disabled:opacity-50"
+                  className="rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 disabled:opacity-50 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -116,7 +116,7 @@ export default function AssessmentsList({
               <button
                 onClick={() => setConfirmingId(assessment.uuid)}
                 disabled={deletingId === assessment.uuid}
-                className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
+                className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-200 disabled:opacity-50 cursor-pointer"
               >
                 Delete
               </button>
