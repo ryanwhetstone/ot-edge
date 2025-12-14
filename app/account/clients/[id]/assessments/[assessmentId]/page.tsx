@@ -78,11 +78,13 @@ export default async function AssessmentViewPage({
           {client[0].firstName} {client[0].lastName} - SPM-2 Assessment
         </h1>
         <p className="mt-2 text-gray-600">
-          Completed on {new Date(assessmentData.assessmentDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
+          Completed on {assessmentData.assessmentDate 
+            ? new Date(assessmentData.assessmentDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })
+            : 'Unknown date'}
         </p>
       </div>
 
