@@ -22,13 +22,11 @@ export default function AssessmentsList({
 }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-  const handleDelete = async (assessmentUuid: string) => {
-    if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
-      return;
-    }
-
+  const handleConfirmDelete = async (assessmentUuid: string) => {
     setDeletingId(assessmentUuid);
+    setConfirmingId(null);
     const toastId = toast.loading('Deleting assessment...');
     
     try {
@@ -93,13 +91,32 @@ export default function AssessmentsList({
             >
               View Results
             </Link>
-            <button
-              onClick={() => handleDelete(assessment.uuid)}
-              disabled={deletingId === assessment.uuid}
-              className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
-            >
-              {deletingId === assessment.uuid ? 'Deleting...' : 'Delete'}
-            </button>
+            {confirmingId === assessment.uuid ? (
+              <>
+                <button
+                  onClick={() => handleConfirmDelete(assessment.uuid)}
+                  disabled={deletingId === assessment.uuid}
+                  className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                >
+                  {deletingId === assessment.uuid ? 'Deleting...' : 'Confirm Deletion'}
+                </button>
+                <button
+                  onClick={() => setConfirmingId(null)}
+                  disabled={deletingId === assessment.uuid}
+                  className="rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setConfirmingId(assessment.uuid)}
+                disabled={deletingId === assessment.uuid}
+                className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       ))}
