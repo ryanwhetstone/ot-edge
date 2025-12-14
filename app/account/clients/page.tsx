@@ -1,13 +1,34 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { db } from "@/lib/drizzle";
+import { users, clients } from "@/lib/db/schema";
+import { eq, desc } from "drizzle-orm";
 
 export default async function ClientsPage() {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user?.email) {
     redirect("/auth/signin");
   }
+
+  // Get user ID
+  const user = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, session.user.email))
+    .limit(1);
+
+  if (user.length === 0) {
+    redirect("/auth/signin");
+  }
+
+  // Get all clients for this user
+  const userClients = await db
+    .select()
+    .from(clients)
+    .where(eq(clients.userId, user[0].id))
+    .orderBy(desc(clients.createdAt));
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -24,11 +45,57 @@ export default async function ClientsPage() {
         </Link>
       </div>
 
-      <div className="rounded-lg border bg-white p-6 shadow-sm">
-        <p className="text-gray-600">
-          No clients yet. Click "New Client" to add your first client.
-        </p>
-      </div>
+      {userClients.length === 0 ? (
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <p className="text-gray-600">
+            No clients yet. Click "New Client" to add your first client.
+          </p>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                  Birth Date
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                  Added
+                </th>
+                <th className="px-6 py-3 text-right text-sm font-medium text-gray-900">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {userClients.map((client) => (
+                <tr key={client.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm">
+                    {client.firstName} {client.lastName}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {new Date(client.birthDate).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {new Date(client.createdAt!).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-right text-sm">
+                    <Link
+                      href={`/account/clients/${client.id}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
