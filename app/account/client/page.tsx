@@ -5,6 +5,8 @@ import { db } from "@/lib/drizzle";
 import { users, clients } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ClientsPage() {
   const session = await auth();
 
