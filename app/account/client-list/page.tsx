@@ -62,51 +62,50 @@ export default async function ClientsPage() {
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
                   Birth Date
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
-                  Added
-                </th>
                 <th className="px-6 py-3 text-right text-sm font-medium text-gray-900">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {userClients.map((client) => (
-                <tr key={client.id} className="hover:bg-gray-100 transition-all cursor-pointer">
-                  <td className="px-6 py-4 text-sm">
-                    <Link
-                      href={`/account/client/${client.uuid}`}
-                      className="block"
-                    >
-                      {client.firstName} {client.lastName}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    <Link
-                      href={`/account/client/${client.uuid}`}
-                      className="block"
-                    >
-                      {new Date(client.birthDate).toLocaleDateString()}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    <Link
-                      href={`/account/client/${client.uuid}`}
-                      className="block"
-                    >
-                      {new Date(client.createdAt!).toLocaleDateString()}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-4 text-right text-sm">
-                    <Link
-                      href={`/account/client/${client.uuid}`}
-                      className="block text-blue-600"
-                    >
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+              {userClients.map((client) => {
+                const birthDate = new Date(client.birthDate);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                  age--;
+                }
+
+                return (
+                  <tr key={client.id} className="hover:bg-gray-100 transition-all cursor-pointer">
+                    <td className="px-6 py-4 text-sm">
+                      <Link
+                        href={`/account/client/${client.uuid}`}
+                        className="block"
+                      >
+                        {client.firstName} {client.lastName}
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      <Link
+                        href={`/account/client/${client.uuid}`}
+                        className="block"
+                      >
+                        {birthDate.toLocaleDateString()} • {age} years old
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 text-right text-sm">
+                      <Link
+                        href={`/account/client/${client.uuid}`}
+                        className="block text-blue-600"
+                      >
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

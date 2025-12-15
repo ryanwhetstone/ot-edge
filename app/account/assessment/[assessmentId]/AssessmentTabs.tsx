@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { Copy } from 'lucide-react';
 import { spm2Sections } from '@/lib/spm2-questions';
 import { getScoreCategory, getCategoryColor, getTScore } from '@/lib/spm2-scoring';
 
@@ -15,21 +16,52 @@ type AssessmentTabsProps = {
 
 export default function AssessmentTabs({ responses, notes, clientName, assessmentId }: AssessmentTabsProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'scores' | 'responses'>('scores');
+  const [activeTab, setActiveTab] = useState<'scores' | 'responses' | 'copy1' | 'copy2'>('scores');
   const [takeaways, setTakeaways] = useState<Record<string, string>>({});
   const [loadingTakeaways, setLoadingTakeaways] = useState<Record<string, boolean>>({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponses, setEditedResponses] = useState<Record<string, number>>(responses);
   const [isSaving, setIsSaving] = useState(false);
 
+  const s = '●';
+
+  const copyTableToClipboard = (tableId: string) => {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    // Create a range and selection
+    const range = document.createRange();
+    const selection = window.getSelection();
+    
+    // Select the table
+    range.selectNode(table);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    try {
+      // Copy to clipboard
+      document.execCommand('copy');
+      toast.success('Copied to clipboard!');
+    } catch (err) {
+      toast.error('Failed to copy');
+    }
+
+    // Clear selection
+    selection?.removeAllRanges();
+  };
+
   const calculateSectionScore = (sectionId: string, useEdited = false) => {
     const section = spm2Sections.find(s => s.id === sectionId);
     if (!section) return 0;
     
     const responsesToUse = useEdited ? editedResponses : responses;
+    const isReversedScoring = sectionId === 'social-participation';
+    
     return section.questions.reduce((total, question) => {
       const response = responsesToUse[question.id] || 0;
-      return total + response;
+      // For social-participation section: Never=4, Occasionally=3, Frequently=2, Always=1
+      const score = isReversedScoring ? (5 - response) : response;
+      return total + score;
     }, 0);
   };
 
@@ -52,34 +84,51 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
     }, 0);
   };
 
-  const generateTakeaway = async (sectionId: string) => {
-    setLoadingTakeaways(prev => ({ ...prev, [sectionId]: true }));
-    
-    try {
-      const response = await fetch('/api/generate-takeaway', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sectionId,
-          responses,
-          clientName,
-        }),
-      });
+  const generateTakeaway = (sectionId: string) => {
+    const section = spm2Sections.find(s => s.id === sectionId);
+    if (!section) return;
 
-      if (!response.ok) {
-        throw new Error('Failed to generate takeaway');
+    const isSocialSection = sectionId === 'social-participation';
+    const groupedResponses: Record<string, string[]> = {
+      never: [],
+      occasionally: [],
+      frequently: [],
+      always: [],
+    };
+
+    section.questions.forEach(question => {
+      const response = responses[question.id];
+      
+      // For social section, highlight Never (1) and Occasionally (2)
+      // For other sections, highlight Frequently (3) and Always (4)
+      const shouldHighlight = isSocialSection 
+        ? (response === 1 || response === 2)
+        : (response === 3 || response === 4);
+
+      if (shouldHighlight) {
+        const responseLabel = getResponseLabel(response).toLowerCase();
+        // Capitalize first character of the question text
+        const capitalizedText = question.text.charAt(0).toUpperCase() + question.text.slice(1).toLowerCase();
+        groupedResponses[responseLabel].push(capitalizedText);
       }
+    });
 
-      const data = await response.json();
-      setTakeaways(prev => ({ ...prev, [sectionId]: data.takeaway }));
-    } catch (error) {
-      console.error('Error generating takeaway:', error);
-      setTakeaways(prev => ({ ...prev, [sectionId]: 'Unable to generate takeaway at this time.' }));
-    } finally {
-      setLoadingTakeaways(prev => ({ ...prev, [sectionId]: false }));
-    }
+    const takeawayParts: string[] = [];
+    
+    // Build the takeaway with grouped responses in specific order
+    const orderedLabels = ['never', 'occasionally', 'always', 'frequently'];
+    orderedLabels.forEach(label => {
+      const questions = groupedResponses[label];
+      if (questions && questions.length > 0) {
+        takeawayParts.push(`${clientName} ${label}: ${questions.join(' | ')}`);
+      }
+    });
+
+    const takeaway = takeawayParts.length > 0
+      ? takeawayParts.join('\n')
+      : 'No significant responses in this section.';
+
+    setTakeaways(prev => ({ ...prev, [sectionId]: takeaway }));
   };
 
   const handleSaveChanges = async () => {
@@ -166,6 +215,26 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
           >
             Responses
           </button>
+          <button
+            onClick={() => setActiveTab('copy1')}
+            className={`whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium cursor-pointer ${
+              activeTab === 'copy1'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            }`}
+          >
+            Copy Option 1
+          </button>
+          <button
+            onClick={() => setActiveTab('copy2')}
+            className={`whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium cursor-pointer ${
+              activeTab === 'copy2'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            }`}
+          >
+            Copy Option 2
+          </button>
         </nav>
       </div>
 
@@ -190,12 +259,12 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                       Category
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Takeaways
+                      Responses
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {spm2Sections.map((section) => {
+                  {spm2Sections.slice(0, 6).map((section) => {
                     const score = calculateSectionScore(section.id, isEditing);
                     const tScore = getTScore(section.id, score);
                     const category = getScoreCategory(section.id, score);
@@ -237,7 +306,7 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                               Generating...
                             </div>
                           ) : (
-                            <div className="text-sm text-gray-700 max-w-xl">
+                            <div className="text-sm text-gray-700 max-w-xl whitespace-pre-line">
                               {takeaway || 'No takeaways available.'}
                             </div>
                           )}
@@ -273,37 +342,59 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                       </div>
                     </td>
                   </tr>
-                  <tr className="bg-gray-50 font-semibold">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-bold text-gray-900">Total</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-bold text-gray-900">
-                        {getTotalScore(isEditing)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">-</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">Overall</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-gray-500">
-                        Summary of all section findings
-                      </div>
-                    </td>
-                  </tr>
+                  {spm2Sections.slice(6).map((section) => {
+                    const score = calculateSectionScore(section.id, isEditing);
+                    const tScore = getTScore(section.id, score);
+                    const category = getScoreCategory(section.id, score);
+                    const takeaway = takeaways[section.id];
+                    const isLoading = loadingTakeaways[section.id];
+                    
+                    return (
+                      <tr key={section.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {section.title}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {section.questions.length} questions
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-semibold text-gray-900">
+                            {score}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-semibold text-gray-900">
+                            {tScore ?? '-'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getCategoryColor(category)}`}>
+                            {category}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          {isLoading ? (
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Generating...
+                            </div>
+                          ) : (
+                            <div className="text-sm text-gray-700 max-w-xl whitespace-pre-line">
+                              {takeaway || 'No takeaways available.'}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
-
-            {notes && (
-              <div className="rounded-lg border bg-blue-50 p-4">
-                <h3 className="font-semibold text-blue-900">Notes</h3>
-                <p className="mt-1 text-sm text-blue-800">{notes}</p>
-              </div>
-            )}
           </div>
         )}
 
@@ -400,6 +491,208 @@ export default function AssessmentTabs({ responses, notes, clientName, assessmen
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {activeTab === 'copy1' && (
+          <div className="space-y-6">
+            <div className="flex justify-end mb-2">
+              <button
+                onClick={() => copyTableToClipboard('copy-table-1')}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer"
+              >
+                <Copy className="w-4 h-4" />
+                Copy to Clipboard
+              </button>
+            </div>
+            <div className="bg-white">
+              <table id="copy-table-1" border={1} className="min-w-full">
+                <style dangerouslySetInnerHTML={{__html: `
+                  <style>
+                    table {
+                        border-collapse: collapse;  /* Makes borders join cleanly */
+                        width: 100%;                /* Optional: adjust as needed */
+                    }
+                    th, td {
+                        border: 1px solid black;    /* Visible solid border */
+                        padding: 8px;               /* Improves readability */
+                        text-align: left;           /* Optional alignment */
+                    }
+                    /* Optional: make headers stand out */
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                </style>
+                `}} />
+                <thead>
+                  <tr>
+                    <th className="px-6 py-3 text-left">
+                      Section
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      Score
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      T
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      Category
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      Responses
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {spm2Sections.slice(0, 6).map((section) => {
+                    const score = calculateSectionScore(section.id, false);
+                    const tScore = getTScore(section.id, score);
+                    const category = getScoreCategory(section.id, score);
+                    const takeaway = takeaways[section.id];
+                    
+                    return (
+                      <tr key={section.id}>
+                        <td className="px-6 py-4">
+                          {section.short_title}
+                        </td>
+                        <td className="px-6 py-4">
+                          {score}
+                        </td>
+                        <td className="px-6 py-4">
+                          {tScore ?? '-'}
+                        </td>
+                        <td className="px-6 py-4">
+                          {category}
+                        </td>
+                        <td className="px-6 py-4 whitespace-pre-line">
+                          {takeaway || 'No takeaways available.'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  <tr>
+                    <td className="px-6 py-4">Sensory Total</td>
+                    <td className="px-6 py-4">
+                      {getSensoryTotal(false)}
+                    </td>
+                    <td className="px-6 py-4">
+                      {getTScore('sensory-total', getSensoryTotal(false)) ?? '-'}
+                    </td>
+                    <td className="px-6 py-4">
+                      {getScoreCategory('sensory-total', getSensoryTotal(false))}
+                    </td>
+                    <td className="px-6 py-4">
+                      Combined sensory processing across all sensory domains
+                    </td>
+                  </tr>
+                  {spm2Sections.slice(6).map((section) => {
+                    const score = calculateSectionScore(section.id, false);
+                    const tScore = getTScore(section.id, score);
+                    const category = getScoreCategory(section.id, score);
+                    const takeaway = takeaways[section.id];
+                    
+                    return (
+                      <tr key={section.id}>
+                        <td className="px-6 py-4">
+                          {section.short_title}
+                        </td>
+                        <td className="px-6 py-4">
+                          {score}
+                        </td>
+                        <td className="px-6 py-4">
+                          {tScore ?? '-'}
+                        </td>
+                        <td className="px-6 py-4">
+                          {category}
+                        </td>
+                        <td className="px-6 py-4 whitespace-pre-line">
+                          {takeaway || 'No takeaways available.'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'copy2' && (
+          <div className="space-y-6">
+            <div className="flex justify-end mb-2">
+              <button
+                onClick={() => copyTableToClipboard('copy-table-2')}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer"
+              >
+                <Copy className="w-4 h-4" />
+                Copy to Clipboard
+              </button>
+            </div>
+            <div className="bg-white">
+              <table id="copy-table-2" border={1} className="min-w-full">
+                <style dangerouslySetInnerHTML={{__html: `
+                  <style>
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    th, td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    .bold {
+                      font-weight: bold;
+                    }
+                </style>
+                `}} />
+                <tbody>
+                  {spm2Sections.slice(0, 6).map((section) => {
+                    const score = calculateSectionScore(section.id, false);
+                    const tScore = getTScore(section.id, score);
+                    const category = getScoreCategory(section.id, score);
+                    const takeaway = takeaways[section.id];
+                    
+                    return (
+                      <Fragment key={section.id}>
+                        <tr>
+                          <td className="px-6 py-4" style={{ whiteSpace: 'pre-line' }}>
+                            <span className="bold">{section.short_title} {s} {category} {s} Raw Score: {score} {s} T Score: {tScore ?? '-'}</span><br />
+                            <span className="bold">Responses:</span> {takeaway || 'No takeaways available.'}
+                          </td>
+                        </tr>
+                      </Fragment>
+                    );
+                  })}
+                  <tr>
+                    <td className="px-6 py-4">
+                      <span className="bold">Sensory Total {s} {getScoreCategory('sensory-total', getSensoryTotal(false))} {s} {getSensoryTotal(false)} {s} {getTScore('sensory-total', getSensoryTotal(false)) ?? '-'}</span><br />
+                      Combined sensory processing across all sensory domains
+                    </td>
+                  </tr>
+                  {spm2Sections.slice(6).map((section) => {
+                    const score = calculateSectionScore(section.id, false);
+                    const tScore = getTScore(section.id, score);
+                    const category = getScoreCategory(section.id, score);
+                    const takeaway = takeaways[section.id];
+                    
+                    return (
+                      <Fragment key={section.id}>
+                        <tr>
+                          <td className="px-6 py-4" style={{ whiteSpace: 'pre-line' }}>
+                            <span className="bold">{section.short_title} {s} {category} {s} Raw Score: {score} {s} T Score: {tScore ?? '-'}</span><br />
+                            <span className="bold">Responses:</span> {takeaway || 'No takeaways available.'}
+                          </td>
+                        </tr>
+                      </Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

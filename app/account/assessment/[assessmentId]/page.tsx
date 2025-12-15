@@ -96,14 +96,6 @@ export default async function AssessmentViewPage({
         assessmentId={assessmentData.uuid}
       />
 
-      <div className="mt-8">
-        <Link
-          href={`/account/client/${client[0].uuid}`}
-          className="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
-        >
-          Back to Client
-        </Link>
-      </div>
     </div>
   );
 }

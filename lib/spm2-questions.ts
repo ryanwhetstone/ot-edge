@@ -4,6 +4,7 @@
 export type SPM2Section = {
   id: string;
   title: string;
+  short_title: string;
   description: string;
   questions: SPM2Question[];
 };
@@ -37,6 +38,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'vision',
     title: 'Vision (VIS)',
+    short_title: 'Vision',
     description: 'Visual processing and visual-motor integration',
     questions: [
       createQuestion('vis1', 1, 'Squints, covers eyes, or complains about bright lighting or sunlight.'),
@@ -54,6 +56,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'hearing',
     title: 'Hearing (HEA)',
+    short_title: 'Hearing',
     description: 'Auditory processing and responses to sounds',
     questions: [
       createQuestion('hea1', 11, 'Is bothered by ordinary household sounds, such as the vacuum cleaner.'),
@@ -71,6 +74,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'touch',
     title: 'Touch (TOU)',
+    short_title: 'Touch',
     description: 'Tactile processing and responses to touch',
     questions: [
       createQuestion('tou1', 21, 'Pulls away when touched lightly or unexpectedly.'),
@@ -88,6 +92,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'taste-smell',
     title: 'Taste and Smell (T&S)',
+    short_title: 'Taste and Smell',
     description: 'Gustatory and olfactory processing',
     questions: [
       createQuestion('ts1', 31, 'Refuses to try new foods or snacks.'),
@@ -105,6 +110,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'body-awareness',
     title: 'Body Awareness (BOD)',
+    short_title: 'Body Awareness',
     description: 'Proprioception and body position awareness',
     questions: [
       createQuestion('bod1', 41, 'Seeks out activities that involve pushing, pulling, or dragging.'),
@@ -122,6 +128,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'balance-motion',
     title: 'Balance and Motion (BAL)',
+    short_title: 'Balance and Motion',
     description: 'Vestibular processing, balance, and responses to movement',
     questions: [
       createQuestion('bal1', 51, 'Is fearful of movement, such as riding swings or slides.'),
@@ -139,6 +146,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'planning-ideas',
     title: 'Planning and Ideas (PLA)',
+    short_title: 'Planning and Ideas',
     description: 'Praxis, motor planning, and generating new ideas',
     questions: [
       createQuestion('pla1', 61, 'Has trouble figuring out how to carry several objects at the same time.'),
@@ -156,6 +164,7 @@ export const spm2Sections: SPM2Section[] = [
   {
     id: 'social-participation',
     title: 'Social Participation (SOC)',
+    short_title: 'Social Participation',
     description: 'Social interactions and participation in activities',
     questions: [
       createQuestion('soc1', 71, 'Plays with friends cooperatively.'),

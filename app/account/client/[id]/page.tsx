@@ -65,6 +65,15 @@ export default async function ClientDetailPage({
     )
     .orderBy(desc(spm2Assessments.createdAt));
 
+  // Calculate age
+  const birthDate = new Date(clientData.birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -74,43 +83,30 @@ export default async function ClientDetailPage({
         >
           ← Back to Clients
         </Link>
-        <h1 className="mt-4 text-3xl font-bold">
-          {clientData.firstName} {clientData.lastName}
-        </h1>
+        <div className="mt-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">
+              {clientData.firstName} {clientData.lastName}
+            </h1>
+            <p className="mt-2 text-gray-600">
+              {birthDate.toLocaleDateString()} • {age} years old
+            </p>
+          </div>
+          <Link
+            href={`/account/client/${id}/edit`}
+            className="rounded bg-gray-600 px-4 py-2 font-medium text-white hover:bg-gray-700"
+          >
+            Edit Client
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-6">
         <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold">Client Information</h2>
-          <dl className="space-y-4">
-            <div>
-              <dt className="text-sm font-medium text-gray-600">First Name</dt>
-              <dd className="mt-1 text-sm text-gray-900">{clientData.firstName}</dd>
-            </div>
-            <div>
-              <dt className="text-sm font-medium text-gray-600">Last Name</dt>
-              <dd className="mt-1 text-sm text-gray-900">{clientData.lastName}</dd>
-            </div>
-            <div>
-              <dt className="text-sm font-medium text-gray-600">Birth Date</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {new Date(clientData.birthDate).toLocaleDateString()}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm font-medium text-gray-600">Added</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {new Date(clientData.createdAt!).toLocaleDateString()}
-              </dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">SPM-2 Assessments</h2>
             <Link
-              href={`/account/clients/${id}/spm2-assessment`}
+              href={`/account/client/${id}/spm2-assessment`}
               className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             >
               + New Assessment

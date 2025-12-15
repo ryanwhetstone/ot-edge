@@ -66,7 +66,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
 
       const data = await response.json();
       toast.success('Assessment saved successfully!', { id: toastId });
-      router.push(`/account/client/${clientId}`);
+      router.push(`/account/assessment/${data.assessment.uuid}`);
     } catch (error) {
       console.error('Error submitting assessment:', error);
       toast.error('Failed to save assessment. Please try again.', { id: toastId });
