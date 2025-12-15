@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   description: "OT Edge - Your OT platform",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
