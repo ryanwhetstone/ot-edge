@@ -15,7 +15,7 @@ type ObservationTabsProps = {
 
 export default function ObservationTabs({ responses, notes, clientName, observationId }: ObservationTabsProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'responses' | 'summary'>('responses');
+  const [activeTab, setActiveTab] = useState<'responses' | 'summary'>('summary');
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponses, setEditedResponses] = useState<Record<string, string>>(responses);
   const [isSaving, setIsSaving] = useState(false);
@@ -107,16 +107,6 @@ export default function ObservationTabs({ responses, notes, clientName, observat
       <div className="border-b border-gray-200">
         <nav className="flex -mb-px">
           <button
-            onClick={() => setActiveTab('responses')}
-            className={`py-4 px-6 text-sm font-medium border-b-2 ${
-              activeTab === 'responses'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Responses
-          </button>
-          <button
             onClick={() => setActiveTab('summary')}
             className={`py-4 px-6 text-sm font-medium border-b-2 ${
               activeTab === 'summary'
@@ -125,6 +115,16 @@ export default function ObservationTabs({ responses, notes, clientName, observat
             }`}
           >
             Summary
+          </button>
+          <button
+            onClick={() => setActiveTab('responses')}
+            className={`py-4 px-6 text-sm font-medium border-b-2 ${
+              activeTab === 'responses'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Responses
           </button>
         </nav>
       </div>
