@@ -49,11 +49,11 @@ export default function EvaluationsList({ evaluations, clientId, clientInternalI
         throw new Error('Failed to create evaluation');
       }
 
-      const data = await response.json();
+      const evaluation = await response.json();
       toast.success('Evaluation created successfully', { id: toastId });
       setIsModalOpen(false);
       setEvaluationName('');
-      router.push(`/account/evaluation/${data.evaluation.uuid}`);
+      router.push(`/account/evaluation/${evaluation.uuid}`);
     } catch (error) {
       console.error('Error creating evaluation:', error);
       toast.error('Failed to create evaluation', { id: toastId });
