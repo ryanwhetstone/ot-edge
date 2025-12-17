@@ -2,9 +2,10 @@ import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/drizzle";
-import { users, clients, spm2Assessments } from "@/lib/db/schema";
+import { users, clients, spm2Assessments, evaluations } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import AssessmentsList from "./AssessmentsList";
+import EvaluationsList from "./EvaluationsList";
 
 export default async function ClientDetailPage({
   params,
@@ -64,6 +65,18 @@ export default async function ClientDetailPage({
       )
     )
     .orderBy(desc(spm2Assessments.createdAt));
+
+  // Get evaluations for this client
+  const clientEvaluations = await db
+    .select()
+    .from(evaluations)
+    .where(
+      and(
+        eq(evaluations.clientId, clientData.id),
+        eq(evaluations.userId, user[0].id)
+      )
+    )
+    .orderBy(desc(evaluations.createdAt));
 
   // Calculate age
   const birthDate = new Date(clientData.birthDate);
@@ -125,21 +138,19 @@ export default async function ClientDetailPage({
         {/* Evaluations Section */}
         <div className="rounded-lg border bg-white shadow-sm">
           <div className="border-b bg-gray-50 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Evaluations</h2>
-              <button
-                className="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-                disabled
-              >
-                + New Evaluation
-              </button>
-            </div>
+            <h2 className="text-xl font-semibold">Evaluations</h2>
           </div>
           <div className="p-6">
-            <div className="mb-6">
-              <p className="text-sm text-gray-600 mb-4">
-                Evaluations help track client progress over time. Each evaluation can contain multiple assessments.
-              </p>
+            <p className="text-sm text-gray-600 mb-4">
+              Evaluations help track client progress over time. Each evaluation can contain multiple assessments.
+            </p>
+            <EvaluationsList 
+              evaluations={clientEvaluations} 
+              clientId={id}
+              clientInternalId={clientData.id}
+            />
+            
+            <div className="mt-8 pt-6 border-t">
               <div className="rounded-md bg-blue-50 border border-blue-200 p-4">
                 <h3 className="text-sm font-semibold text-blue-900 mb-2">Temporary: Direct SPM-2 Assessments</h3>
                 <div className="flex items-center justify-between mb-3">

@@ -29,6 +29,22 @@ export const clients = pgTable('clients', {
   };
 });
 
+export const evaluations = pgTable('evaluations', {
+  id: serial('id').primaryKey(),
+  uuid: uuid('uuid').defaultRandom().notNull().unique(),
+  clientId: integer('client_id').notNull().references(() => clients.id, { onDelete: 'cascade' }),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  name: varchar('name', { length: 255 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => {
+  return {
+    clientIdIdx: index('idx_evaluations_client_id').on(table.clientId),
+    userIdIdx: index('idx_evaluations_user_id').on(table.userId),
+    uuidIdx: index('idx_evaluations_uuid').on(table.uuid),
+  };
+});
+
 export const spm2Assessments = pgTable('spm2_assessments', {
   id: serial('id').primaryKey(),
   uuid: uuid('uuid').defaultRandom().notNull().unique(),
