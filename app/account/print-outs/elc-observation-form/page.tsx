@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { elcObservationOfSkills } from "@/lib/observation-templates";
+import PrintButton from "./PrintButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +14,8 @@ export default async function ELCObservationFormPage() {
   }
 
   return (
-    <>
-      <style jsx global>{`
+    <div className="container mx-auto px-4 py-8 print-container">
+      <style dangerouslySetInnerHTML={{__html: `
         @media print {
           .no-print {
             display: none !important;
@@ -28,9 +29,7 @@ export default async function ELCObservationFormPage() {
             -webkit-print-color-adjust: exact;
           }
         }
-      `}</style>
-
-      <div className="container mx-auto px-4 py-8 print-container">
+      `}} />
         <div className="no-print mb-6 flex justify-between items-center">
           <Link
             href="/account/print-outs"
@@ -38,12 +37,7 @@ export default async function ELCObservationFormPage() {
           >
             ← Back to Printouts
           </Link>
-          <button
-            onClick={() => window.print()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Print Form
-          </button>
+          <PrintButton />
         </div>
 
         <div className="bg-white p-8 rounded-lg border shadow-sm">
@@ -136,6 +130,5 @@ export default async function ELCObservationFormPage() {
           </div>
         </div>
       </div>
-    </>
   );
 }
