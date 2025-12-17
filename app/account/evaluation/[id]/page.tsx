@@ -2,8 +2,9 @@ import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/drizzle";
-import { users, clients, evaluations, spm2Assessments } from "@/lib/db/schema";
+import { users, clients, evaluations, spm2Assessments, observations } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
+import { getObservationTemplate } from "@/lib/observation-templates";
 
 export const dynamic = 'force-dynamic';
 
@@ -75,6 +76,13 @@ export default async function EvaluationDetailPage({
     .where(eq(spm2Assessments.evaluationId, evaluationData.id))
     .orderBy(desc(spm2Assessments.createdAt));
 
+  // Get observations for this evaluation
+  const evaluationObservations = await db
+    .select()
+    .from(observations)
+    .where(eq(observations.evaluationId, evaluationData.id))
+    .orderBy(desc(observations.createdAt));
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -145,18 +153,49 @@ export default async function EvaluationDetailPage({
           <div className="border-b bg-gray-50 px-6 py-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Observations</h2>
-              <button
+              <Link
+                href={`/account/evaluation/${id}/observation`}
                 className="inline-flex items-center rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-                disabled
               >
-                + Add Observation
-              </button>
+                + New ELC Observation
+              </Link>
             </div>
           </div>
           <div className="p-6">
-            <p className="text-sm text-gray-600">
-              No observations yet. Observations feature coming soon.
-            </p>
+            {evaluationObservations.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No observations yet.</p>
+                <p className="mt-2 text-sm text-gray-500">
+                  Click "New ELC Observation" to create your first observation for this evaluation.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {evaluationObservations.map((observation) => {
+                  const template = getObservationTemplate(observation.observationType);
+                  return (
+                    <div
+                      key={observation.id}
+                      className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-gray-300 transition-all"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {template?.name || observation.observationType}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Completed {observation.createdAt ? new Date(observation.createdAt).toLocaleDateString() : 'N/A'}
+                          </p>
+                        </div>
+                        <span className="text-sm text-gray-600 font-medium">
+                          View Details (Coming Soon)
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -45,6 +45,24 @@ export const evaluations = pgTable('evaluations', {
   };
 });
 
+export const observations = pgTable('observations', {
+  id: serial('id').primaryKey(),
+  uuid: uuid('uuid').defaultRandom().notNull().unique(),
+  evaluationId: integer('evaluation_id').notNull().references(() => evaluations.id, { onDelete: 'cascade' }),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  observationType: varchar('observation_type', { length: 255 }).notNull(), // e.g., 'elc-observation-of-skills'
+  responses: jsonb('responses').notNull(), // Store all question responses as JSON
+  notes: text('notes'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => {
+  return {
+    evaluationIdIdx: index('idx_observations_evaluation_id').on(table.evaluationId),
+    userIdIdx: index('idx_observations_user_id').on(table.userId),
+    uuidIdx: index('idx_observations_uuid').on(table.uuid),
+  };
+});
+
 export const spm2Assessments = pgTable('spm2_assessments', {
   id: serial('id').primaryKey(),
   uuid: uuid('uuid').defaultRandom().notNull().unique(),
