@@ -140,14 +140,22 @@ export default async function EvaluationDetailPage({
           </div>
         </div>
 
-        {/* Notes Section (Future) */}
+        {/* Observations Section */}
         <div className="rounded-lg border bg-white shadow-sm">
           <div className="border-b bg-gray-50 px-6 py-4">
-            <h2 className="text-xl font-semibold">Notes</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Observations</h2>
+              <button
+                className="inline-flex items-center rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+                disabled
+              >
+                + Add Observation
+              </button>
+            </div>
           </div>
           <div className="p-6">
             <p className="text-sm text-gray-600">
-              Evaluation notes feature coming soon.
+              No observations yet. Observations feature coming soon.
             </p>
           </div>
         </div>
