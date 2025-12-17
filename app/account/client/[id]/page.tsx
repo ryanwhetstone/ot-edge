@@ -101,25 +101,62 @@ export default async function ClientDetailPage({
         </div>
       </div>
 
-      <div className="space-y-6">
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">SPM-2 Assessments</h2>
-            <Link
-              href={`/account/client/${id}/spm2-assessment`}
-              className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              + New Assessment
-            </Link>
+      <div className="space-y-8">
+        {/* Treatments Section */}
+        <div className="rounded-lg border bg-white shadow-sm">
+          <div className="border-b bg-gray-50 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Treatments</h2>
+              <button
+                className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                disabled
+              >
+                + New Treatment
+              </button>
+            </div>
           </div>
-          <AssessmentsList assessments={assessments} clientId={id} />
+          <div className="p-6">
+            <p className="text-sm text-gray-600">
+              No treatments yet. Treatments feature coming soon.
+            </p>
+          </div>
         </div>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold">Sessions</h2>
-          <p className="text-sm text-gray-600">
-            No sessions yet. Sessions feature coming soon.
-          </p>
+        {/* Evaluations Section */}
+        <div className="rounded-lg border bg-white shadow-sm">
+          <div className="border-b bg-gray-50 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Evaluations</h2>
+              <button
+                className="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+                disabled
+              >
+                + New Evaluation
+              </button>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="mb-6">
+              <p className="text-sm text-gray-600 mb-4">
+                Evaluations help track client progress over time. Each evaluation can contain multiple assessments.
+              </p>
+              <div className="rounded-md bg-blue-50 border border-blue-200 p-4">
+                <h3 className="text-sm font-semibold text-blue-900 mb-2">Temporary: Direct SPM-2 Assessments</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm text-blue-800">
+                    These assessments will soon be organized under evaluations.
+                  </p>
+                  <Link
+                    href={`/account/client/${id}/spm2-assessment`}
+                    className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  >
+                    + New SPM-2 Assessment
+                  </Link>
+                </div>
+                <AssessmentsList assessments={assessments} clientId={id} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
