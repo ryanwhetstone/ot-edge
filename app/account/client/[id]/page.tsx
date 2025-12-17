@@ -98,7 +98,7 @@ export default async function ClientDetailPage({
       <div className="space-y-8">
         {/* Treatments Section */}
         <div className="rounded-lg border bg-white shadow-sm">
-          <div className="border-b bg-gray-50 px-6 py-4">
+          <div className="border-b bg-gray-50 px-6 py-4 rounded-t-lg">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Treatments</h2>
               <button
@@ -118,7 +118,7 @@ export default async function ClientDetailPage({
 
         {/* Evaluations Section */}
         <div className="rounded-lg border bg-white shadow-sm">
-          <div className="border-b bg-gray-50 px-6 py-4">
+          <div className="border-b bg-gray-50 px-6 py-4 rounded-t-lg">
             <h2 className="text-xl font-semibold">Evaluations</h2>
           </div>
           <div className="p-6">

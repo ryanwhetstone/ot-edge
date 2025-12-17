@@ -103,7 +103,7 @@ export default async function EvaluationDetailPage({
       <div className="space-y-6">
         {/* SPM-2 Assessments Section */}
         <div className="rounded-lg border bg-white shadow-sm">
-          <div className="border-b bg-gray-50 px-6 py-4">
+          <div className="border-b bg-gray-50 px-6 py-4 rounded-t-lg">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">SPM-2 Assessments</h2>
               <Link
@@ -150,7 +150,7 @@ export default async function EvaluationDetailPage({
 
         {/* Observations Section */}
         <div className="rounded-lg border bg-white shadow-sm">
-          <div className="border-b bg-gray-50 px-6 py-4">
+          <div className="border-b bg-gray-50 px-6 py-4 rounded-t-lg">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Observations</h2>
               <Link
