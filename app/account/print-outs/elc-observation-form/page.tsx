@@ -22,11 +22,32 @@ export default async function ELCObservationFormPage() {
           }
           .print-container {
             max-width: 100% !important;
-            padding: 0 !important;
+            padding: 0.5rem !important;
+          }
+          .print-sections {
+            column-count: 2;
+            column-gap: 1rem;
+          }
+          .section-block {
+            break-inside: avoid;
+            page-break-inside: avoid;
           }
           body {
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
+            font-size: 10pt;
+          }
+          .print-header {
+            column-span: all;
+          }
+          .print-notes {
+            column-span: all;
+          }
+        }
+        @media screen {
+          .print-sections {
+            column-count: 2;
+            column-gap: 1.5rem;
           }
         }
       `}} />
@@ -40,91 +61,87 @@ export default async function ELCObservationFormPage() {
           <PrintButton />
         </div>
 
-        <div className="bg-white p-8 rounded-lg border shadow-sm">
+        <div className="bg-white p-4 rounded-lg border shadow-sm">
           {/* Header */}
-          <div className="border-b-2 border-gray-800 pb-4 mb-6">
-            <h1 className="text-2xl font-bold text-center">
+          <div className="border-b-2 border-gray-800 pb-2 mb-3 print-header">
+            <h1 className="text-xl font-bold text-center">
               {elcObservationOfSkills.name}
             </h1>
-            <p className="text-center text-sm text-gray-600 mt-2">
-              {elcObservationOfSkills.description}
-            </p>
           </div>
 
           {/* Client Information */}
-          <div className="grid grid-cols-2 gap-4 mb-6 pb-4 border-b border-gray-300">
+          <div className="grid grid-cols-4 gap-2 mb-3 pb-2 border-b border-gray-300 print-header text-xs">
             <div>
-              <label className="text-sm font-semibold">Client Name:</label>
-              <div className="border-b border-gray-400 mt-1 h-6"></div>
+              <label className="font-semibold">Name:</label>
+              <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
-              <label className="text-sm font-semibold">Date:</label>
-              <div className="border-b border-gray-400 mt-1 h-6"></div>
+              <label className="font-semibold">Date:</label>
+              <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
-              <label className="text-sm font-semibold">Observer:</label>
-              <div className="border-b border-gray-400 mt-1 h-6"></div>
+              <label className="font-semibold">Observer:</label>
+              <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
-              <label className="text-sm font-semibold">Age:</label>
-              <div className="border-b border-gray-400 mt-1 h-6"></div>
+              <label className="font-semibold">Age:</label>
+              <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
           </div>
 
-          {/* Sections */}
-          {elcObservationOfSkills.sections.map((section, sectionIndex) => (
-            <div key={section.id} className="mb-8 break-inside-avoid">
-              <div className="bg-gray-100 px-4 py-2 mb-4">
-                <h2 className="text-lg font-bold">{section.title}</h2>
-                {section.description && (
-                  <p className="text-sm text-gray-600 mt-1">{section.description}</p>
-                )}
-              </div>
+          {/* Sections in Columns */}
+          <div className="print-sections">
+            {elcObservationOfSkills.sections.map((section, sectionIndex) => (
+              <div key={section.id} className="mb-4 section-block">
+                <div className="bg-gray-100 px-2 py-1 mb-2">
+                  <h2 className="text-sm font-bold">{section.title}</h2>
+                </div>
 
-              <div className="space-y-4">
-                {section.questions.map((question, questionIndex) => (
-                  <div key={question.id} className="pl-4 break-inside-avoid">
-                    <p className="font-medium text-sm mb-2">
-                      {sectionIndex + 1}.{questionIndex + 1}. {question.text}
-                    </p>
-                    
-                    {question.type === 'yes-no-not-established' ? (
-                      <div className="flex gap-6 ml-4">
-                        <label className="flex items-center gap-2">
-                          <div className="w-5 h-5 border-2 border-gray-800 rounded-full"></div>
-                          <span className="text-sm">Yes</span>
-                        </label>
-                        <label className="flex items-center gap-2">
-                          <div className="w-5 h-5 border-2 border-gray-800 rounded-full"></div>
-                          <span className="text-sm">No</span>
-                        </label>
-                        <label className="flex items-center gap-2">
-                          <div className="w-5 h-5 border-2 border-gray-800 rounded-full"></div>
-                          <span className="text-sm">Not Established</span>
-                        </label>
-                      </div>
-                    ) : question.options ? (
-                      <div className="flex flex-wrap gap-4 ml-4">
-                        {question.options.map((option) => (
-                          <label key={option} className="flex items-start gap-2 max-w-xs">
-                            <div className="w-5 h-5 border-2 border-gray-800 rounded-full flex-shrink-0 mt-0.5"></div>
-                            <span className="text-sm">{option}</span>
+                <div className="space-y-2">
+                  {section.questions.map((question, questionIndex) => (
+                    <div key={question.id} className="pl-2 text-xs">
+                      <p className="font-medium mb-1">
+                        {sectionIndex + 1}.{questionIndex + 1}. {question.text}
+                      </p>
+                      
+                      {question.type === 'yes-no-not-established' ? (
+                        <div className="flex gap-3 ml-2">
+                          <label className="flex items-center gap-1">
+                            <div className="w-3 h-3 border-2 border-gray-800 rounded-full"></div>
+                            <span className="text-xs">Y</span>
                           </label>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                ))}
+                          <label className="flex items-center gap-1">
+                            <div className="w-3 h-3 border-2 border-gray-800 rounded-full"></div>
+                            <span className="text-xs">N</span>
+                          </label>
+                          <label className="flex items-center gap-1">
+                            <div className="w-3 h-3 border-2 border-gray-800 rounded-full"></div>
+                            <span className="text-xs">NE</span>
+                          </label>
+                        </div>
+                      ) : question.options ? (
+                        <div className="ml-2 space-y-1">
+                          {question.options.map((option) => (
+                            <label key={option} className="flex items-start gap-1">
+                              <div className="w-3 h-3 border-2 border-gray-800 rounded-full flex-shrink-0 mt-0.5"></div>
+                              <span className="text-xs leading-tight">{option}</span>
+                            </label>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           {/* Notes Section */}
-          <div className="mt-8 pt-6 border-t-2 border-gray-800">
-            <h2 className="text-lg font-bold mb-4">Notes / Additional Observations</h2>
-            <div className="space-y-3">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="border-b border-gray-400 h-6"></div>
+          <div className="mt-3 pt-2 border-t-2 border-gray-800 print-notes">
+            <h2 className="text-sm font-bold mb-2">Notes</h2>
+            <div className="space-y-2">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="border-b border-gray-400 h-4"></div>
               ))}
             </div>
           </div>
