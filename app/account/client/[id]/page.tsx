@@ -2,9 +2,8 @@ import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/drizzle";
-import { users, clients, spm2Assessments, evaluations } from "@/lib/db/schema";
+import { users, clients, evaluations } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
-import AssessmentsList from "./AssessmentsList";
 import EvaluationsList from "./EvaluationsList";
 
 export default async function ClientDetailPage({
@@ -53,18 +52,6 @@ export default async function ClientDetailPage({
   }
 
   const clientData = client[0];
-
-  // Get assessments for this client
-  const assessments = await db
-    .select()
-    .from(spm2Assessments)
-    .where(
-      and(
-        eq(spm2Assessments.clientId, clientData.id),
-        eq(spm2Assessments.userId, user[0].id)
-      )
-    )
-    .orderBy(desc(spm2Assessments.createdAt));
 
   // Get evaluations for this client
   const clientEvaluations = await db
@@ -149,24 +136,6 @@ export default async function ClientDetailPage({
               clientId={id}
               clientInternalId={clientData.id}
             />
-            
-            <div className="mt-8 pt-6 border-t">
-              <div className="rounded-md bg-blue-50 border border-blue-200 p-4">
-                <h3 className="text-sm font-semibold text-blue-900 mb-2">Temporary: Direct SPM-2 Assessments</h3>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm text-blue-800">
-                    These assessments will soon be organized under evaluations.
-                  </p>
-                  <Link
-                    href={`/account/client/${id}/spm2-assessment`}
-                    className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                  >
-                    + New SPM-2 Assessment
-                  </Link>
-                </div>
-                <AssessmentsList assessments={assessments} clientId={id} />
-              </div>
-            </div>
           </div>
         </div>
       </div>
