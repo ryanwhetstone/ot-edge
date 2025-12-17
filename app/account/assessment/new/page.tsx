@@ -2,24 +2,27 @@ import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/drizzle";
-import { users, clients } from "@/lib/db/schema";
+import { users, clients, evaluations } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import SPM2AssessmentForm from "./SPM2AssessmentForm";
 import { getTotalQuestions } from "@/lib/spm2-questions";
 
-export default async function SPM2AssessmentPage({
-  params,
+export const dynamic = 'force-dynamic';
+
+export default async function NewAssessmentPage({
   searchParams,
 }: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ evaluationId?: string }>;
+  searchParams: Promise<{ clientId?: string; evaluationId?: string }>;
 }) {
-  const { id } = await params;
-  const { evaluationId } = await searchParams;
+  const { clientId, evaluationId } = await searchParams;
   const session = await auth();
 
   if (!session?.user?.email) {
     redirect("/auth/signin");
+  }
+
+  if (!clientId) {
+    redirect("/account/client-list");
   }
 
   // Get user ID
@@ -39,7 +42,7 @@ export default async function SPM2AssessmentPage({
     .from(clients)
     .where(
       and(
-        eq(clients.uuid, id),
+        eq(clients.uuid, clientId),
         eq(clients.userId, user[0].id)
       )
     )
@@ -50,17 +53,52 @@ export default async function SPM2AssessmentPage({
   }
 
   const clientData = client[0];
+
+  // If evaluationId is provided, verify it exists and belongs to this client
+  let evaluationData = null;
+  if (evaluationId) {
+    const evaluation = await db
+      .select()
+      .from(evaluations)
+      .where(
+        and(
+          eq(evaluations.id, parseInt(evaluationId)),
+          eq(evaluations.clientId, clientData.id),
+          eq(evaluations.userId, user[0].id)
+        )
+      )
+      .limit(1);
+
+    if (evaluation.length > 0) {
+      evaluationData = evaluation[0];
+    }
+  }
+
   const totalQuestions = getTotalQuestions();
+  const backUrl = evaluationData 
+    ? `/account/evaluation/${evaluationData.uuid}`
+    : `/account/client/${clientId}`;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
+        <Link
+          href={backUrl}
+          className="text-sm text-blue-600 hover:underline"
+        >
+          ← Back
+        </Link>
         <h1 className="mt-4 text-3xl font-bold">
-          SPM-2 Assessment
+          New SPM-2 Assessment
         </h1>
         <p className="mt-2 text-gray-600">
           Client: {clientData.firstName} {clientData.lastName}
         </p>
+        {evaluationData && (
+          <p className="mt-1 text-sm text-gray-500">
+            Evaluation: {evaluationData.name}
+          </p>
+        )}
         <p className="mt-1 text-sm text-gray-500">
           This assessment contains {totalQuestions} questions across multiple sections.
         </p>
@@ -75,7 +113,10 @@ export default async function SPM2AssessmentPage({
         </ul>
       </div>
 
-      <SPM2AssessmentForm clientId={id} evaluationId={evaluationId ? parseInt(evaluationId) : undefined} />
+      <SPM2AssessmentForm 
+        clientId={clientId} 
+        evaluationId={evaluationId ? parseInt(evaluationId) : undefined} 
+      />
     </div>
   );
 }

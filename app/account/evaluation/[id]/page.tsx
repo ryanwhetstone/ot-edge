@@ -107,7 +107,7 @@ export default async function EvaluationDetailPage({
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">SPM-2 Assessments</h2>
               <Link
-                href={`/account/client/${clientData.uuid}/spm2-assessment?evaluationId=${evaluationData.id}`}
+                href={`/account/assessment/new?clientId=${clientData.uuid}&evaluationId=${evaluationData.id}`}
                 className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
               >
                 + New SPM-2 Assessment
