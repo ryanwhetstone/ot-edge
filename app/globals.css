@@ -29,4 +29,5 @@ body {
 button,
 a {
   transition: all 300ms ease-in-out;
+  cursor: pointer;
 }
