@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/drizzle";
-import { users, clients, spm2Assessments } from "@/lib/db/schema";
+import { users, clients, spm2Assessments, evaluations } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import AssessmentTabs from "./AssessmentTabs";
 import DeleteButton from "./DeleteButton";
@@ -59,13 +59,36 @@ export default async function AssessmentViewPage({
     notFound();
   }
 
+  // Get evaluation information if this assessment is linked to an evaluation
+  let evaluationData = null;
+  if (assessmentData.evaluationId) {
+    const evaluation = await db
+      .select()
+      .from(evaluations)
+      .where(eq(evaluations.id, assessmentData.evaluationId))
+      .limit(1);
+    
+    if (evaluation.length > 0) {
+      evaluationData = evaluation[0];
+    }
+  }
+
   const responses = assessmentData.responses as Record<string, number>;
+  const backUrl = evaluationData 
+    ? `/account/evaluation/${evaluationData.uuid}`
+    : `/account/client/${client[0].uuid}`;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
+            <Link
+              href={backUrl}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              ← Back to {evaluationData ? 'Evaluation' : 'Client'}
+            </Link>
             <h1 className="mt-4 text-3xl font-bold">
               {client[0].firstName} {client[0].lastName} - SPM-2 Assessment
             </h1>
@@ -78,6 +101,11 @@ export default async function AssessmentViewPage({
                   })
                 : 'Unknown date'}
             </p>
+            {evaluationData && (
+              <p className="mt-1 text-sm text-gray-500">
+                Evaluation: {evaluationData.name}
+              </p>
+            )}
           </div>
           <DeleteButton assessmentId={assessmentData.uuid} clientId={client[0].uuid} />
         </div>
