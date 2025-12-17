@@ -115,7 +115,7 @@ export default function EvaluationsList({ evaluations, clientId, clientInternalI
                   id="evaluationName"
                   value={evaluationName}
                   onChange={(e) => setEvaluationName(e.target.value)}
-                  placeholder="e.g., Winter 2025 Evaluation"
+                  placeholder="e.g., 2025 School Year"
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   disabled={isSubmitting}
                 />

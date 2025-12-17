@@ -5,6 +5,7 @@ import { db } from "@/lib/drizzle";
 import { users, clients, evaluations, spm2Assessments, observations } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { getObservationTemplate } from "@/lib/observation-templates";
+import DeleteButton from "./DeleteButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -92,11 +93,14 @@ export default async function EvaluationDetailPage({
         >
           ← Back to {clientData.firstName} {clientData.lastName}
         </Link>
-        <div className="mt-4">
-          <h1 className="text-3xl font-bold">{evaluationData.name}</h1>
-          <p className="mt-2 text-gray-600">
-            For {clientData.firstName} {clientData.lastName} • Created {evaluationData.createdAt ? new Date(evaluationData.createdAt).toLocaleDateString() : 'N/A'}
-          </p>
+        <div className="mt-4 flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">{evaluationData.name}</h1>
+            <p className="mt-2 text-gray-600">
+              For {clientData.firstName} {clientData.lastName} • Created {evaluationData.createdAt ? new Date(evaluationData.createdAt).toLocaleDateString() : 'N/A'}
+            </p>
+          </div>
+          <DeleteButton evaluationId={evaluationData.uuid} clientId={clientData.uuid} />
         </div>
       </div>
 
