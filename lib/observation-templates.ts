@@ -30,119 +30,340 @@ export const elcObservationOfSkills: ObservationTemplate = {
   description: 'Comprehensive observation of early learning center skills',
   sections: [
     {
-      id: 'motor-skills',
-      title: 'Motor Skills',
-      description: 'Gross and fine motor development',
+      id: 'hand-dominance',
+      title: 'Hand Dominance',
       questions: [
         {
-          id: 'motor-1',
-          text: 'Can the child walk independently?',
-          type: 'yes-no-not-established',
-        },
-        {
-          id: 'motor-2',
-          text: 'Can the child run with coordination?',
-          type: 'yes-no-not-established',
-        },
-        {
-          id: 'motor-3',
-          text: 'Can the child jump with both feet?',
-          type: 'yes-no-not-established',
-        },
-        {
-          id: 'motor-4',
-          text: 'Preferred hand for activities:',
+          id: 'hand-dom-1',
+          text: 'Hand Dominance',
           type: 'multiple-choice',
-          options: ['Left', 'Right', 'No preference', 'Alternating'],
+          options: ['Appears to be right hand dominant', 'Appears to be left hand dominant', 'Not established'],
+        },
+      ],
+    },
+    {
+      id: 'prewriting-strokes',
+      title: 'Prewriting Strokes',
+      questions: [
+        {
+          id: 'prewrite-1',
+          text: 'Scribbles spontaneously',
+          type: 'yes-no-not-established',
         },
         {
-          id: 'motor-5',
-          text: 'Can the child grasp and manipulate small objects?',
+          id: 'prewrite-2',
+          text: 'Imitated horizontal strokes',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-3',
+          text: 'Imitated vertical strokes',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-4',
+          text: 'Imitated circular strokes',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-5',
+          text: 'Imitated intersecting lines',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-6',
+          text: 'Imitated diagonals',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-7',
+          text: 'Imitated shapes',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'prewrite-8',
+          text: 'Draws pictures',
           type: 'yes-no-not-established',
         },
       ],
     },
     {
-      id: 'cognitive-skills',
-      title: 'Cognitive Skills',
-      description: 'Thinking and problem-solving abilities',
+      id: 'fine-motor-grasp',
+      title: 'Fine Motor: Grasp',
       questions: [
         {
-          id: 'cognitive-1',
-          text: 'Can the child sort objects by color?',
+          id: 'grasp-1',
+          text: 'Isolates finger to point',
           type: 'yes-no-not-established',
         },
         {
-          id: 'cognitive-2',
-          text: 'Can the child sort objects by shape?',
+          id: 'grasp-2',
+          text: 'Turns pages of a book',
           type: 'yes-no-not-established',
         },
         {
-          id: 'cognitive-3',
-          text: 'Can the child count to 10?',
+          id: 'grasp-3',
+          text: 'Pincer grasp with both hands',
           type: 'yes-no-not-established',
         },
         {
-          id: 'cognitive-4',
-          text: 'Attention span during activities:',
-          type: 'multiple-choice',
-          options: ['Less than 2 minutes', '2-5 minutes', '5-10 minutes', 'More than 10 minutes'],
+          id: 'grasp-4',
+          text: '3-jaw grasp with both hands',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'grasp-5',
+          text: 'Fisted/digital pronate/static fingertip on crayon',
+          type: 'yes-no-not-established',
         },
       ],
     },
     {
-      id: 'social-emotional',
-      title: 'Social-Emotional Skills',
-      description: 'Social interaction and emotional regulation',
+      id: 'visual-motor',
+      title: 'Visual Motor',
       questions: [
         {
-          id: 'social-1',
-          text: 'Does the child engage with peers during play?',
+          id: 'visual-1',
+          text: 'Visually tracked bubbles',
           type: 'yes-no-not-established',
         },
         {
-          id: 'social-2',
-          text: 'Does the child share toys with others?',
+          id: 'visual-2',
+          text: 'Visually scanned and selected toys',
           type: 'yes-no-not-established',
         },
         {
-          id: 'social-3',
-          text: 'Can the child express emotions appropriately?',
+          id: 'visual-3',
+          text: 'Marks on paper',
           type: 'yes-no-not-established',
         },
         {
-          id: 'social-4',
-          text: 'Response to transitions:',
-          type: 'multiple-choice',
-          options: ['Difficult/resistant', 'Some difficulty', 'Adapts with support', 'Adapts easily'],
+          id: 'visual-4',
+          text: 'Colors within boundaries',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'visual-5',
+          text: 'Does simple matching puzzles',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'visual-6',
+          text: 'Builds 10 block tower',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'visual-7',
+          text: 'Put bears into bottle',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'visual-8',
+          text: 'Named letters',
+          type: 'yes-no-not-established',
         },
       ],
     },
     {
-      id: 'communication',
-      title: 'Communication Skills',
-      description: 'Expressive and receptive language',
+      id: 'bilateral-control',
+      title: 'Bilateral Control',
       questions: [
         {
-          id: 'comm-1',
-          text: 'Does the child use words to express needs?',
+          id: 'bilateral-1',
+          text: 'Opened small bottle',
           type: 'yes-no-not-established',
         },
         {
-          id: 'comm-2',
-          text: 'Does the child follow simple directions?',
+          id: 'bilateral-2',
+          text: 'Stabilized paper during drawing',
           type: 'yes-no-not-established',
         },
         {
-          id: 'comm-3',
-          text: 'Can the child engage in simple conversations?',
+          id: 'bilateral-3',
+          text: 'Needed assistance to cut',
           type: 'yes-no-not-established',
         },
         {
-          id: 'comm-4',
-          text: 'Speech clarity:',
+          id: 'bilateral-4',
+          text: 'Did not rip paper',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'bilateral-5',
+          text: 'Opened packaging',
+          type: 'yes-no-not-established',
+        },
+      ],
+    },
+    {
+      id: 'grasp-scissors',
+      title: 'Grasp on Scissors',
+      questions: [
+        {
+          id: 'scissors-1',
+          text: 'Scissors skill level',
           type: 'multiple-choice',
-          options: ['Difficult to understand', 'Sometimes unclear', 'Mostly clear', 'Very clear'],
+          options: [
+            'No exposure at home',
+            'Held standard scissors with 2 hands to open and shut them',
+            'Accepted hand over hand to snip with adapted loop scissors',
+            'Snips independently',
+            'Cuts on a line'
+          ],
+        },
+      ],
+    },
+    {
+      id: 'postural-control',
+      title: 'Postural Control, ROM, Strength',
+      questions: [
+        {
+          id: 'postural-1',
+          text: 'Able to climb in & out of adult sized chair and under the table',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'postural-2',
+          text: 'Climbed playground equipment',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'postural-3',
+          text: 'Demonstrated body awareness to crawl through tunnel',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'postural-4',
+          text: 'Played in a variety of positions',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'postural-5',
+          text: 'ROM appears to be within functional limits for age appropriate tasks',
+          type: 'yes-no-not-established',
+        },
+      ],
+    },
+    {
+      id: 'play',
+      title: 'Play',
+      questions: [
+        {
+          id: 'play-1',
+          text: 'Play is primarily self directed',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'play-2',
+          text: 'Selected play items and used toys appropriately from beginning to end',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'play-3',
+          text: 'Cleaned up with cues',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'play-4',
+          text: 'Preferred academic concepts and/or close ended tasks',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'play-5',
+          text: 'Needed modeling for imaginary play and smiled during these interactions',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'play-6',
+          text: 'Used playground equipment appropriately',
+          type: 'yes-no-not-established',
+        },
+      ],
+    },
+    {
+      id: 'sensory-social-emotional',
+      title: 'Sensory/Social Emotional',
+      questions: [
+        {
+          id: 'sensory-1',
+          text: 'Initiated praise with caregiver',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-2',
+          text: 'Imitation of play with objects (bears kissed, fed bears, etc.)',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-3',
+          text: 'Imitated clapping hands and high-5\'s',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-4',
+          text: 'Imitated gestures to songs',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-5',
+          text: 'Demonstrated motor planning (with toys and playground equipment)',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-6',
+          text: 'Maintained eye contact',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-7',
+          text: 'Responded to name',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-8',
+          text: 'Peeked at peers through equipment - attempted to initiate play with peers or adults',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-9',
+          text: 'Used a variety of equipment (was not repetitive or overactive)',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-10',
+          text: 'Demonstrated ability to wait',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-11',
+          text: 'Grabbed items from peers',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-12',
+          text: 'Stimming or repetitive play observed',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-13',
+          text: 'Oriented to loud noise',
+          type: 'yes-no-not-established',
+        },
+        {
+          id: 'sensory-14',
+          text: 'Recognized caregiver upon returning from observation',
+          type: 'yes-no-not-established',
+        },
+      ],
+    },
+    {
+      id: 'self-help',
+      title: 'Self Help',
+      questions: [
+        {
+          id: 'selfhelp-1',
+          text: 'Helped push arms through sleeves',
+          type: 'yes-no-not-established',
         },
       ],
     },

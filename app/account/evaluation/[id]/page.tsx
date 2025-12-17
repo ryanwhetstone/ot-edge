@@ -174,9 +174,10 @@ export default async function EvaluationDetailPage({
                 {evaluationObservations.map((observation) => {
                   const template = getObservationTemplate(observation.observationType);
                   return (
-                    <div
+                    <Link
                       key={observation.id}
-                      className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-gray-300 transition-all"
+                      href={`/account/observation/${observation.uuid}`}
+                      className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-center justify-between">
                         <div>
@@ -188,10 +189,10 @@ export default async function EvaluationDetailPage({
                           </p>
                         </div>
                         <span className="text-sm text-gray-600 font-medium">
-                          View Details (Coming Soon)
+                          View Details →
                         </span>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
