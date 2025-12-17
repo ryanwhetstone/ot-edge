@@ -7,7 +7,12 @@ import toast from 'react-hot-toast';
 
 type Responses = Record<string, number>;
 
-export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
+type SPM2AssessmentFormProps = {
+  clientId: string;
+  evaluationId?: number;
+};
+
+export default function SPM2AssessmentForm({ clientId, evaluationId }: SPM2AssessmentFormProps) {
   const router = useRouter();
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [responses, setResponses] = useState<Responses>({});
@@ -57,6 +62,7 @@ export default function SPM2AssessmentForm({ clientId }: { clientId: string }) {
           clientId,
           responses,
           notes: notes.trim() || null,
+          evaluationId: evaluationId || null,
         }),
       });
 

@@ -50,6 +50,7 @@ export const spm2Assessments = pgTable('spm2_assessments', {
   uuid: uuid('uuid').defaultRandom().notNull().unique(),
   clientId: integer('client_id').notNull().references(() => clients.id, { onDelete: 'cascade' }),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  evaluationId: integer('evaluation_id').references(() => evaluations.id, { onDelete: 'set null' }),
   assessmentDate: timestamp('assessment_date').defaultNow(),
   responses: jsonb('responses').notNull(), // Store all question responses as JSON
   notes: text('notes'),
@@ -59,6 +60,7 @@ export const spm2Assessments = pgTable('spm2_assessments', {
   return {
     clientIdIdx: index('idx_spm2_client_id').on(table.clientId),
     userIdIdx: index('idx_spm2_user_id').on(table.userId),
+    evaluationIdIdx: index('idx_spm2_evaluation_id').on(table.evaluationId),
     uuidIdx: index('idx_spm2_uuid').on(table.uuid),
   };
 });

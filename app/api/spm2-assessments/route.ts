@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     const userId = user[0].id;
     const body = await request.json();
-    const { clientId, responses, notes } = body;
+    const { clientId, responses, notes, evaluationId } = body;
 
     if (!clientId || !responses) {
       return NextResponse.json(
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
       .values({
         clientId: client[0].id,
         userId: userId,
+        evaluationId: evaluationId || null,
         responses: responses,
         notes: notes || null,
       })
