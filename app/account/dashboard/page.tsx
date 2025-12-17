@@ -45,6 +45,19 @@ export default async function DashboardPage() {
         </Link>
 
         <Link
+          href="/account/print-outs"
+          className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+        >
+          <h2 className="mb-2 text-lg font-semibold">Printouts</h2>
+          <p className="text-sm text-gray-600">
+            Access printable resources and templates
+          </p>
+          <div className="mt-4 inline-block text-blue-600">
+            View printouts →
+          </div>
+        </Link>
+
+        <Link
           href="/account/profile"
           className="rounded-lg border bg-white p-6 shadow-sm hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
         >
