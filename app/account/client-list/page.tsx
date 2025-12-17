@@ -38,7 +38,7 @@ export default async function ClientsPage() {
           <p className="mt-2 text-gray-600">Manage your client list</p>
         </div>
         <Link
-          href="/account/client-list/new"
+          href="/account/client/new"
           className="rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
         >
           + New Client

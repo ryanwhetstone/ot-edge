@@ -66,12 +66,6 @@ export default async function AssessmentViewPage({
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <Link
-              href={`/account/client/${client[0].uuid}`}
-              className="text-sm text-blue-600 hover:underline"
-            >
-              ← Back to Client
-            </Link>
             <h1 className="mt-4 text-3xl font-bold">
               {client[0].firstName} {client[0].lastName} - SPM-2 Assessment
             </h1>

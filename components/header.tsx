@@ -27,6 +27,12 @@ export default async function Header() {
               >
                 Dashboard
               </Link>
+              <Link
+                href="/account/client-list"
+                className="font-bold text-gray-700 hover:text-gray-900"
+              >
+                Clients
+              </Link>
               <AccountMenu user={session.user} />
             </>
           ) : (

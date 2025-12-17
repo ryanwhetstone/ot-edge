@@ -77,12 +77,6 @@ export default async function ClientDetailPage({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link
-          href="/account/client-list"
-          className="text-sm text-blue-600 hover:underline"
-        >
-          ← Back to Clients
-        </Link>
         <div className="mt-4 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">

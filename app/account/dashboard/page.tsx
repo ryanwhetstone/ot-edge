@@ -22,7 +22,7 @@ export default async function DashboardPage() {
 
       <div className="mb-6">
         <Link
-          href="/account/client-list/new"
+          href="/account/client/new"
           className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
         >
           <span className="text-xl">+</span>

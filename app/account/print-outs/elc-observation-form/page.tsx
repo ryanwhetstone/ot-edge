@@ -76,7 +76,7 @@ export default async function ELCObservationFormPage() {
               <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
-              <label className="font-semibold">Date:</label>
+              <label className="font-semibold">Age:</label>
               <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
@@ -84,7 +84,7 @@ export default async function ELCObservationFormPage() {
               <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
             <div>
-              <label className="font-semibold">Age:</label>
+              <label className="font-semibold">Date:</label>
               <div className="border-b border-gray-400 mt-1 h-5"></div>
             </div>
           </div>

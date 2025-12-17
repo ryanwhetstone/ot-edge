@@ -95,12 +95,6 @@ export default function EditClientPage({
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-2xl">
         <div className="mb-8">
-          <Link
-            href={`/account/client/${clientId}`}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            ← Back to Client
-          </Link>
           <h1 className="mt-4 text-3xl font-bold">Edit Client</h1>
           <p className="mt-2 text-gray-600">
             Update client information
