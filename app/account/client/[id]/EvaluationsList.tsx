@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 type Evaluation = {
   id: number;
@@ -77,9 +78,10 @@ export default function EvaluationsList({ evaluations, clientId, clientInternalI
       {evaluations.length > 0 && (
         <div className="space-y-3">
           {evaluations.map((evaluation) => (
-            <div
+            <Link
               key={evaluation.id}
-              className="rounded-lg border border-gray-200 bg-white p-4 hover:border-gray-300 transition-colors"
+              href={`/account/evaluation/${evaluation.uuid}`}
+              className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-blue-300 hover:shadow-md transition-all"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -88,14 +90,11 @@ export default function EvaluationsList({ evaluations, clientId, clientInternalI
                     Created {evaluation.createdAt ? new Date(evaluation.createdAt).toLocaleDateString() : 'N/A'}
                   </p>
                 </div>
-                <button
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                  onClick={() => toast('Evaluation details coming soon')}
-                >
+                <span className="text-sm text-blue-600 font-medium">
                   View Details →
-                </button>
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

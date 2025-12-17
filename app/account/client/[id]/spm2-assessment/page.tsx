@@ -9,10 +9,13 @@ import { getTotalQuestions } from "@/lib/spm2-questions";
 
 export default async function SPM2AssessmentPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ evaluationId?: string }>;
 }) {
   const { id } = await params;
+  const { evaluationId } = await searchParams;
   const session = await auth();
 
   if (!session?.user?.email) {
@@ -78,7 +81,7 @@ export default async function SPM2AssessmentPage({
         </ul>
       </div>
 
-      <SPM2AssessmentForm clientId={id} />
+      <SPM2AssessmentForm clientId={id} evaluationId={evaluationId ? parseInt(evaluationId) : undefined} />
     </div>
   );
 }
