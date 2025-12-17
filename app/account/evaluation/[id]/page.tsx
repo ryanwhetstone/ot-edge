@@ -93,25 +93,25 @@ export default async function EvaluationDetailPage({
       </div>
 
       <div className="space-y-6">
-        {/* Assessments Section */}
+        {/* SPM-2 Assessments Section */}
         <div className="rounded-lg border bg-white shadow-sm">
           <div className="border-b bg-gray-50 px-6 py-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Assessments</h2>
+              <h2 className="text-xl font-semibold">SPM-2 Assessments</h2>
               <Link
                 href={`/account/client/${clientData.uuid}/spm2-assessment?evaluationId=${evaluationData.id}`}
                 className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
               >
-                + Add Assessment
+                + New SPM-2 Assessment
               </Link>
             </div>
           </div>
           <div className="p-6">
             {assessments.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-600">No assessments yet.</p>
+                <p className="text-gray-600">No SPM-2 assessments yet.</p>
                 <p className="mt-2 text-sm text-gray-500">
-                  Click "Add Assessment" to create your first assessment for this evaluation.
+                  Click "New SPM-2 Assessment" to create your first assessment for this evaluation.
                 </p>
               </div>
             ) : (
